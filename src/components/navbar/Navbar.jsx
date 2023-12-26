@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {toggleSidebar, toggleTheme, isLight} from "../../js/script";
+import { Button } from "react-bootstrap";
+import './navbar.css';
 
 export default function Navbar() {
 
@@ -55,14 +57,9 @@ export default function Navbar() {
                 <div className="navbar-collapse navbar">
                     <ul className="navbar-nav">
                         <li className="nav-item dropdown">
-                            <a href="#" data-bs-toggle="dropdown" className="nav-icon pe-md-0">
-                            <img src="image/profile.jpg" className="avatar img-fluid rounded"></img>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-end">
-                                <a href="#" className="dropdown-item">Profile</a>
-                                <a href="#" className="dropdown-item">Setting</a>
-                                <a href="#" className="dropdown-item">Logout</a>
-                            </div>
+                            <Button className="logout" id="btn-logout">
+                            Đăng xuất
+                            </Button>
                         </li>
                     </ul>
                 </div>

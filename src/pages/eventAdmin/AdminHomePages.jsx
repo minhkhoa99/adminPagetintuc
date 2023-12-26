@@ -1,9 +1,9 @@
-import MainPages from "../../components/mainPages/MainPage";
-import Navbar from "../../components/navbar/Navbar";
-import Siderbar from "../../components/siderbar/Siderbar";
+import MainPages from "../../components/mainPages/MainPage.jsx";
+import Navbar from "../../components/navbar/Navbar.jsx";
+import Siderbar from "../../components/siderbar/Siderbar.jsx";
 import './adminPage.css';
 import '../../js/script.js';
-const AdminPages = () => {
+const AdminHomePages = () => {
     return (
 
              <div className="wrapper">
@@ -20,4 +20,4 @@ const AdminPages = () => {
     );
   }
   
-  export default AdminPages;
+  export default AdminHomePages;

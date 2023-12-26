@@ -1,10 +1,11 @@
 import './App.css';
-import AdminPages from './pages/eventAdmin/AdminPages';
+import AdminHomePages from './pages/eventAdmin/AdminHomePages';
+
 
 function App() {
   return (
     <div className="App">
-     <AdminPages></AdminPages>
+     <AdminHomePages></AdminHomePages>
     </div>
   );
 }

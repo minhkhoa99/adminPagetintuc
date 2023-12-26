@@ -183,7 +183,7 @@ a.sidebar-link {
     background-color: var(--bs-body-color);
 }
 
-html[data-bs-theme="dark"] .theme-toggle .fa-sun,
+html[data-bs-theme="dark"] .theme-toggle .fa-sun ,
 html[data-bs-theme="light"] .theme-toggle .fa-moon {
     cursor: pointer;
     padding: 10px;
