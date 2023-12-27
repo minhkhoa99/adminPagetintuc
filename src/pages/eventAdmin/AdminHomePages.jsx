@@ -1,22 +1,17 @@
 import MainPages from "../../components/mainPages/MainPage.jsx";
 import Navbar from "../../components/navbar/Navbar.jsx";
-import Siderbar from "../../components/siderbar/Siderbar.jsx";
+
 import './adminPage.css';
 import '../../js/script.js';
+import React from "react";
 const AdminHomePages = () => {
     return (
+<React.Fragment>
 
-             <div className="wrapper">
-       <Siderbar></Siderbar>  
-       <div className="main">
-       <Navbar></Navbar>
        <MainPages></MainPages>
-        </div>  
-     
-        
-      </div>
 
-     
+</React.Fragment>
+
     );
   }
   

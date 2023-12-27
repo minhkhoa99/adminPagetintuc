@@ -14,7 +14,7 @@ const Siderbar = () => {
                        Menu
                     </li>
                     <li className="sidebar-item">
-                        <a href="#" className="sidebar-link">
+                        <a href="/" className="sidebar-link">
                             <i className="fa-solid fa-list pe-2"></i>
                             Trang chủ
                         </a>
@@ -26,7 +26,7 @@ const Siderbar = () => {
                         </a>
                         <ul id="pages" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li className="sidebar-item">
-                                <a href="#" className="sidebar-link">Tạo bài viết</a>
+                                <a href={"http://localhost:3000/admin/pages/postPages"} className="sidebar-link">Tạo bài viết</a>
                             </li>
                             <li className="sidebar-item">
                                 <a href="#" className="sidebar-link">Cập nhật bài viết</a>

@@ -7,10 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const columns = [
-  { id: 'name', label: 'Id', minWidth: 170 },
-  { id: 'code', label: 'Bài viết gần đây', minWidth: 100 },
+  { id: 'name', label: 'Bài viết mới nhất', minWidth: 170 },
+  { id: 'code', label: 'Tiêu đề ngắn', minWidth: 100 },
   {
     id: 'population',
     label: 'Nội dung',
@@ -20,20 +22,27 @@ const columns = [
   },
   {
     id: 'size',
-    label: 'Hình ảnh',
+    label: 'Ngày tạo',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'density',
-    label: 'Ngày tạo',
     minWidth: 170,
     align: 'right',
-    format: (value) => value.toFixed(2),
+    format: (value) => (
+  <IconButton aria-label="delete" size="large" onClick={() => handleDelete(value)}>
+  <DeleteIcon />
+  </IconButton>
+    ),
   },
 ];
 
+const handleDelete = (recordId) => {
+  // Xử lý xóa dữ liệu tương ứng với recordId
+  console.log('Deleting record with ID:', recordId);
+};
 function createData(name, code, population, size) {
   const density = population / size;
   return { name, code, population, size, density };
