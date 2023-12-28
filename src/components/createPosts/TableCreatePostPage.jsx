@@ -21,20 +21,22 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'population',
-    label: 'Hình ảnh',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
     id: 'size',
     label: 'Ngày tạo',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
   },
-
+  {
+    id: 'density',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => (
+  <IconButton aria-label="delete" size="large" onClick={() => handleDelete(value)}>
+  <DeleteIcon />
+  </IconButton>
+    ),
+  },
 ];
 
 const handleDelete = (recordId) => {
@@ -64,7 +66,7 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
-export default function HomePages() {
+export default function TableCreatePostPage() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

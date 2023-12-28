@@ -201,6 +201,13 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
     display: none;
 }
 
-.span-head {
-    margin-top: 2rem;
+.span-btn-createPostPage {
+margin-top: 2rem;
+}
+.view-pages {
+margin-top: 2rem;
+
+}
+.table-update-pages{
+    margin-top: 4.5vh;
 }

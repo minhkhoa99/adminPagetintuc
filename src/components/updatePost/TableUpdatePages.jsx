@@ -7,8 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import FormUpdatePages from "./FormUpdatePages";
+
 
 const columns = [
   { id: 'name', label: 'Bài viết mới nhất', minWidth: 170 },
@@ -21,20 +21,20 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'population',
-    label: 'Hình ảnh',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
     id: 'size',
     label: 'Ngày tạo',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
   },
-
+  {
+    id: 'density',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => (
+      <FormUpdatePages/>
+    ),
+  },
 ];
 
 const handleDelete = (recordId) => {
@@ -64,7 +64,7 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
-export default function HomePages() {
+export default function TableUpdatePages() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

@@ -8,7 +8,7 @@ const MainPages = () => {
         <React.Fragment>
                <main className="content px-3 py-2">
                 <div className="container-fluid">
-                    <div className="mb-3 span-head">
+                    <div className="mb-3 span-head view-pages">
                         <h4>Tìm kiếm bài viết</h4>
                     </div>
                     <div className="row">
@@ -24,10 +24,7 @@ const MainPages = () => {
                     </div>
                 </div>
             </main>
-            <div className="theme-toggle">
-                <i className="fa-regular fa-moon"></i>
-                <i className="fa-regular fa-sun"></i>
-            </div>
+
             
         </React.Fragment>
     )

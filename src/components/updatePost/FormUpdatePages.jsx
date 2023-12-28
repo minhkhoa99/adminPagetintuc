@@ -1,14 +1,12 @@
 import { TextField, MenuItem } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import "./postpage.css";
-
-import ButtonCheck from "./ButtonCheck";
 import ButtonUploadFile from "./ButtonUploadFile";
+import ButtonCheck from "./ButtonCheck";
 
-function FormCreatePosts() {
+function FormUpdatePosts() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -38,14 +36,17 @@ function FormCreatePosts() {
   ];
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow} className="span-btn-create">
-        Thêm sự kiện
+    <React.Fragment>
+    
+    <div className="btn-update-margin">
+    <Button variant="primary" onClick={handleShow}>
+        Cập nhật sự kiện
       </Button>
+    </div>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Thêm sự kiện</Modal.Title>
+          <Modal.Title>Cập nhật sự kiện</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -103,12 +104,12 @@ function FormCreatePosts() {
             Đóng
           </Button>
           <Button variant="primary" onClick={handleClose}>
-            Tạo mới
+            Cập nhật
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </React.Fragment>
   );
 }
 
-export default FormCreatePosts;
+export default FormUpdatePosts;
