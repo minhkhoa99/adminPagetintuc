@@ -22,7 +22,7 @@ const columns = [
   },
   {
     id: 'population',
-    label: 'Hình ảnh',
+    label: 'Sự kiện',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),

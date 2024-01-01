@@ -18,7 +18,7 @@ const MainPages = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="card border-0">
+                    <div className="border-0">
                         
                            <HomePages></HomePages>               
                     </div>
