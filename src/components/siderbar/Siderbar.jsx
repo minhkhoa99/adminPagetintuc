@@ -49,12 +49,6 @@ const Siderbar = () => {
               </li>
             </ul>
           </li>
-          <li className="sidebar-item">
-            <a href="http://localhost:3000/admin/pages/schedulePages" className="sidebar-link">
-              <i className="fa-solid fa-sliders pe-2"></i>
-              Tạo lịch làm việc
-            </a>
-          </li>
 
           <li className="sidebar-item">
             <a
@@ -88,12 +82,17 @@ const Siderbar = () => {
                 >
                   <li className="sidebar-item">
                     <a href="#" className="sidebar-link">
-                      Đổi mật khẩu
+                     Quản lý tài khoản
                     </a>
                   </li>
                   <li className="sidebar-item">
                     <a href="#" className="sidebar-link">
                       Tạo tài khoản
+                    </a>
+                  </li>
+                  <li className="sidebar-item">
+                    <a href="#" className="sidebar-link">
+                      Đổi mật khẩu
                     </a>
                   </li>
                 </ul>

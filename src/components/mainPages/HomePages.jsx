@@ -7,8 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 const columns = [
   { id: 'name', label: 'Bài viết mới nhất', minWidth: 170 },
@@ -21,7 +19,7 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'population',
+    id: 'events',
     label: 'Sự kiện',
     minWidth: 170,
     align: 'right',

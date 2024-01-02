@@ -6,7 +6,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import UpdatePage from "./pages/updatePostPage/UpdatePages";
-import SchedulePage from "./pages/schedulePage/SchedulePage";
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
             <Route path="/" element={<AdminHomePages />} />
             <Route path="admin/pages/postPages" element={<PostPage />} />
             <Route path="admin/pages/updatePages" element={<UpdatePage />} />
-            <Route path="admin/pages/schedulePages" element = {<SchedulePage/>} /> 
+         
           </Routes>
         </div>
       </div>

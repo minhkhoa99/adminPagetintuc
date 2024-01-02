@@ -16,24 +16,24 @@ function FormCreatePosts() {
 
   const currencies = [
     {
-      value: "Chuyển đổi số",
-      label: "Chuyển đổi số",
+      value: "Tin Tức-Sự Kiện",
+      label: "Tin Tức-Sự Kiện",
     },
     {
-      value: "Văn hóa",
-      label: "Văn hóa",
+      value: "Tuyên truyền Cổ Động",
+      label: "Tuyên truyền Cổ Động",
     },
     {
-      value: "Thể thao",
-      label: "Du lịch",
+      value: "Nghệ Thuật Quần Chúng ",
+      label: "Nghệ Thuật Quần Chúng",
     },
     {
-      value: "Gia đình",
-      label: "Gia đình",
+      value: "Tuyên Truyền Lưu Động",
+      label: "Tuyên Truyền Lưu Động",
     },
     {
-      value: "Đoàn thể",
-      label: "Đoàn thể",
+      value: "Chiếu Phim-Lưu Động",
+      label: "Chiếu Phim-Lưu Động",
       },
   ];
 
@@ -61,7 +61,7 @@ function FormCreatePosts() {
                 id="filled-select-currency"
                 select
                 label="Thể loại"
-                defaultValue="Chuyển đổi số"
+                defaultValue="Tin Tức-Sự Kiện"
                 helperText="Chọn sự kiện"
                 variant="filled"
               >

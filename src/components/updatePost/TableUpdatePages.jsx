@@ -21,6 +21,13 @@ const columns = [
     format: (value) => value.toLocaleString('en-US'),
   },
   {
+    id: 'eventsUpdate',
+    label: 'Sự kiện',
+    minWidth: 170,
+    align: 'right',
+    format: (value) => value.toLocaleString('en-US'),
+  },
+  {
     id: 'size',
     label: 'Ngày tạo',
     minWidth: 170,
