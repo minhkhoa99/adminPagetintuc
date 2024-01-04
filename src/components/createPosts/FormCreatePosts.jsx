@@ -1,41 +1,40 @@
 import { TextField, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import axios from "axios"
 import "./postpage.css";
 
 import ButtonCheck from "./ButtonCheck";
 import ButtonUploadFile from "./ButtonUploadFile";
 
 function FormCreatePosts() {
+
+
+  const [value, setvalue] = useState('')
+
+  const [category, setCategory] = useState([])
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const currencies = [
-    {
-      value: "Tin Tức-Sự Kiện",
-      label: "Tin Tức-Sự Kiện",
-    },
-    {
-      value: "Tuyên truyền Cổ Động",
-      label: "Tuyên truyền Cổ Động",
-    },
-    {
-      value: "Nghệ Thuật Quần Chúng ",
-      label: "Nghệ Thuật Quần Chúng",
-    },
-    {
-      value: "Tuyên Truyền Lưu Động",
-      label: "Tuyên Truyền Lưu Động",
-    },
-    {
-      value: "Chiếu Phim-Lưu Động",
-      label: "Chiếu Phim-Lưu Động",
-      },
-  ];
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/category')
+      .then(data => {
+        setCategory(data.data.data)
+      })
+      .catch(err => console.log(err))
+  }, [])
+  console.log(category);
+
+  const handleEvent = (e) => {
+    setvalue(e.target)
+    console.log(value);
+  }
 
   return (
     <>
@@ -49,7 +48,7 @@ function FormCreatePosts() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <div className="title-form">
+            <div className="title-form ">
               <TextField
                 id="outlined-multiline-flexible"
                 label="Nhập chủ đề sự kiện"
@@ -58,16 +57,18 @@ function FormCreatePosts() {
               />
 
               <TextField
-                id="filled-select-currency"
+                id="filled-select-currency menu-items"
                 select
                 label="Thể loại"
                 defaultValue="Tin Tức-Sự Kiện"
                 helperText="Chọn sự kiện"
+                onChange={handleEvent}
                 variant="filled"
               >
-                {currencies.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
+                {category.map((option) => (
+
+                  < MenuItem key={option.id} value={option.name} >
+                    {option.name}
                   </MenuItem>
                 ))}
               </TextField>
@@ -75,7 +76,7 @@ function FormCreatePosts() {
             </div>
 
             <div className="short-title">
-            <TextField
+              <TextField
                 id="outlined-multiline-flexible"
                 label="Nhập tiêu đề ngắn"
                 multiline
@@ -106,7 +107,7 @@ function FormCreatePosts() {
             Tạo mới
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal >
     </>
   );
 }

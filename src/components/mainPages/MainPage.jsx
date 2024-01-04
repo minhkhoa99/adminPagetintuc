@@ -6,7 +6,7 @@ const MainPages = () => {
 
     return (
         <React.Fragment>
-               <main className="content px-3 py-2">
+            <main className="content px-3 py-2">
                 <div className="container-fluid">
                     <div className="mb-3 span-head view-pages">
                         <h4>Tìm kiếm bài viết</h4>
@@ -14,18 +14,19 @@ const MainPages = () => {
                     <div className="row">
                         <div className="col-12 col-md-6 d-flex">
                             <div className="cards flex-fill border-0 illustration">
-                           <Search></Search>
+                                <Search></Search>
                             </div>
                         </div>
                     </div>
                     <div className="border-0">
-                        
-                           <HomePages></HomePages>               
+
+                        <HomePages>
+                        </HomePages>
                     </div>
                 </div>
             </main>
 
-            
+
         </React.Fragment>
     )
 }
