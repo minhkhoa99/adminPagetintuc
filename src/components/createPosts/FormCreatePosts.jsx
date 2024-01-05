@@ -45,15 +45,16 @@ function FormCreatePosts() {
     e.preventDefault();
 
     const selectedValue = e.target.value;
-    const selectedMenuItem = category.find((option) => option.id === selectedValue);
+    const selectedMenuItem = category.find(
+      (option) => option.id === selectedValue
+    );
 
-    if(selectedMenuItem) {
+    if (selectedMenuItem) {
       const { id } = selectedMenuItem;
 
       setCreateNews({ ...createNews, CategoryId: id });
-
     }
-   
+
     setvalue(selectedValue);
   };
   useEffect(() => {
@@ -78,7 +79,7 @@ function FormCreatePosts() {
     try {
       events.preventDefault();
 
-      const response = await axios.post("http://localhost:8000/new", {
+      await axios.post("http://localhost:8000/new", {
         title: createNews.title,
         shortTitle: createNews.shortTitle,
         image: createNews.image,
@@ -89,7 +90,6 @@ function FormCreatePosts() {
       });
 
       handleClose();
-      console.log(response.data);
     } catch (error) {
       console.log(error);
       throw error;
@@ -98,9 +98,9 @@ function FormCreatePosts() {
   return (
     <>
       <Button
-        variant="primary"
+        variant='primary'
         onClick={handleShow}
-        className="span-btn-create"
+        className='span-btn-create'
       >
         Thêm sự kiện
       </Button>
@@ -111,11 +111,11 @@ function FormCreatePosts() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <div className="title-form ">
+            <div className='title-form '>
               <TextField
-                id="outlined-multiline-flexible"
-                label="Nhập chủ đề sự kiện"
-                name="title"
+                id='outlined-multiline-flexible'
+                label='Nhập chủ đề sự kiện'
+                name='title'
                 value={createNews.title}
                 onChange={handleChange}
                 multiline
@@ -123,49 +123,48 @@ function FormCreatePosts() {
               />
 
               <TextField
-                id="filled-select-currency menu-items"
+                id='filled-select-currency menu-items'
                 select
-                label="Sự kiện"
-             
-                defaultValue="Chọn sự kiện"
-                helperText="Chọn sự kiện"
+                label='Sự kiện'
+                defaultValue='Chọn sự kiện'
+                helperText='Chọn sự kiện'
                 onChange={handleEvent}
-                variant="filled"
+                variant='filled'
               >
                 {category.map((option) => (
-                  <MenuItem key={option.id} value={option.id } >
+                  <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
                 ))}
               </TextField>
             </div>
 
-            <div className="short-title">
+            <div className='short-title'>
               <TextField
-                id="outlined-multiline-flexible"
-                name="shortTitle"
+                id='outlined-multiline-flexible'
+                name='shortTitle'
                 value={createNews.shortTitle}
                 onChange={handleChange}
-                label="Nhập tiêu đề ngắn"
+                label='Nhập tiêu đề ngắn'
                 multiline
                 maxRows={4}
               />
             </div>
 
-            <div className="uploadfile-btn">
+            <div className='uploadfile-btn'>
               <ButtonUploadFile />
             </div>
 
             <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
+              className='mb-3'
+              controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
               <ButtonCheck />
               <Form.Control
-                as="textarea"
+                as='textarea'
                 rows={10}
-                name="content"
+                name='content'
                 value={createNews.content}
                 onChange={handleChange}
               />
@@ -173,10 +172,10 @@ function FormCreatePosts() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant='secondary' onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleCreateNews}>
+          <Button variant='primary' onClick={handleCreateNews}>
             Tạo mới
           </Button>
         </Modal.Footer>
