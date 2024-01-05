@@ -10,7 +10,7 @@ const Siderbar = () => {
         <ul className="sidebar-nav">
           <li className="sidebar-header">Menu</li>
           <li className="sidebar-item">
-            <a href="/" className="sidebar-link">
+            <a href="http://localhost:3000/admin/home-page" className="sidebar-link">
               <i className="fa-solid fa-list pe-2"></i>
               Trang chủ
             </a>
