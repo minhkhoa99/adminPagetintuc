@@ -86,7 +86,7 @@ const Siderbar = () => {
                     </a>
                   </li>
                   <li className="sidebar-item">
-                    <a href="#" className="sidebar-link">
+                    <a href="/admin/register/" className="sidebar-link">
                       Tạo tài khoản
                     </a>
                   </li>

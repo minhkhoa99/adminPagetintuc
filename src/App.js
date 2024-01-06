@@ -11,6 +11,7 @@ import React, { useEffect } from "react";
 import Register from "./pages/register/Register";
 import TableUser from "./pages/table-user/TableUser";
 import Cookies from 'js-cookie';
+import UpdateUser from "./pages/updateUser/UpdateUser";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="admin/pages/updatePages" element={<UpdatePage />} />
               <Route path="/admin/register" element={<Register />} />
               <Route path="/admin/user" element={<TableUser />} />
+              <Route path="/admin/user/:id" element={<UpdateUser />} />
             </Routes>
           </div>
         </div>
