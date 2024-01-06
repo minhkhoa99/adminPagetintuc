@@ -7,17 +7,28 @@ import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import UpdatePage from "./pages/updatePostPage/UpdatePages";
 import Login from "./pages/login/Login";
-import React from "react";
+import React, { useEffect } from "react";
 import Register from "./pages/register/Register";
 import TableUser from "./pages/table-user/TableUser";
+import Cookies from 'js-cookie';
 
-function App() {
+const App = () => {
+
+    const token = Cookies.get('Authorization');
+
   return (
-    
+   
     <React.Fragment>
       
       <Router>
-        <div className="wrapper">
+        {!token && (
+          <Routes >
+              <Route path="/admin/" element={<Login />} />
+
+          </Routes>
+        )}
+        {token && (
+          <div className="wrapper">
           <Siderbar />
           <div className="main">
             <Navbar />
@@ -27,10 +38,12 @@ function App() {
               <Route path="admin/pages/updatePages" element={<UpdatePage />} />
               <Route path="/admin/register" element={<Register />} />
               <Route path="/admin/user" element={<TableUser />} />
-
             </Routes>
           </div>
         </div>
+        )}
+          
+        
         <div className="theme-toggle">
           <i className="fa-regular fa-moon"></i>
           <i className="fa-regular fa-sun"></i>
@@ -38,7 +51,6 @@ function App() {
       </Router>
       <Router>
         <Routes>
-          <Route path="/admin/" element={<Login />} />
         </Routes>
       </Router>
     </React.Fragment>
