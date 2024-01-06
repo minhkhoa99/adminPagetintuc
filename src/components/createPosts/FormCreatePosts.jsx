@@ -5,8 +5,6 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import "./postpage.css";
-
-import ButtonCheck from "./ButtonCheck";
 import ButtonUploadFile from "./ButtonUploadFile";
 import { message } from "antd";
 
@@ -42,6 +40,20 @@ function FormCreatePosts() {
     }
     getData();
   }, []);
+
+  const handleImageUpload = (title, isImage, isVideo) => {
+    if (isImage.includes(title.type)) {
+      setCreateNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        image: title.name,
+      }));
+    } else if (isVideo.includes(title.type)) {
+      setCreateNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        video: title.name,
+      }));
+    }
+  };
 
   const handleEvent = (e) => {
     e.preventDefault();
@@ -90,6 +102,8 @@ function FormCreatePosts() {
         status: createNews.status,
         CategoryId: createNews.CategoryId,
       });
+
+      console.log(createNews);
       message.success("Tạo mới bài viết thành công");
 
       handleClose();
@@ -99,12 +113,13 @@ function FormCreatePosts() {
       throw error;
     }
   };
+
   return (
     <>
       <Button
-        variant='primary'
+        variant="primary"
         onClick={handleShow}
-        className='span-btn-create'
+        className="span-btn-create"
       >
         Thêm sự kiện
       </Button>
@@ -115,11 +130,11 @@ function FormCreatePosts() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <div className='title-form '>
+            <div className="title-form ">
               <TextField
-                id='outlined-multiline-flexible'
-                label='Nhập chủ đề sự kiện'
-                name='title'
+                id="outlined-multiline-flexible"
+                label="Nhập chủ đề sự kiện"
+                name="title"
                 value={createNews.title}
                 onChange={handleChange}
                 multiline
@@ -127,13 +142,13 @@ function FormCreatePosts() {
               />
 
               <TextField
-                id='filled-select-currency menu-items'
+                id="filled-select-currency"
                 select
-                label='Sự kiện'
-                defaultValue='Chọn sự kiện'
-                helperText='Chọn sự kiện'
+                label="Sự kiện"
+                defaultValue="Chọn sự kiện"
+                helperText="Chọn sự kiện"
                 onChange={handleEvent}
-                variant='filled'
+                variant="filled"
               >
                 {category.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
@@ -143,32 +158,32 @@ function FormCreatePosts() {
               </TextField>
             </div>
 
-            <div className='short-title'>
+            <div className="short-title">
               <TextField
-                id='outlined-multiline-flexible'
-                name='shortTitle'
-                value={createNews.shortTitle}
-                onChange={handleChange}
-                label='Nhập tiêu đề ngắn'
+                id="outlined-multiline-flexible"
+                label="Nhập tiêu đề ngắn"
                 multiline
                 maxRows={4}
+                name="shortTitle"
+                value={createNews.shortTitle}
+                onChange={handleChange}
               />
             </div>
 
-            <div className='uploadfile-btn'>
-              <ButtonUploadFile />
+            <div className="uploadfile-btn">
+              <ButtonUploadFile onFileUpload={handleImageUpload} />
             </div>
 
             <Form.Group
-              className='mb-3'
-              controlId='exampleForm.ControlTextarea1'
+              className="mb-3 form-text-data"
+              controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
-              <ButtonCheck />
+
               <Form.Control
-                as='textarea'
+                as="textarea"
                 rows={10}
-                name='content'
+                name="content"
                 value={createNews.content}
                 onChange={handleChange}
               />
@@ -176,10 +191,10 @@ function FormCreatePosts() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant='primary' onClick={handleCreateNews}>
+          <Button variant="primary" onClick={handleCreateNews}>
             Tạo mới
           </Button>
         </Modal.Footer>

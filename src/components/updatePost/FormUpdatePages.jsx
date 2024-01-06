@@ -7,6 +7,7 @@ import ButtonUploadFile from "./ButtonUploadFile";
 import ButtonCheck from "./ButtonCheck";
 import axios from "axios";
 import { message } from "antd";
+import './updatePages.css'
 
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
@@ -49,6 +50,15 @@ function FormUpdatePosts(props) {
     getById();
   }, []);
 
+  const handleImageUpload = (title, isImage, isVideo) => {
+    if(isImage.includes(title.type)){
+      setEditNews((prevCreateNews) => ({ ...prevCreateNews, image: title.name }));
+ 
+    }else if(isVideo.includes(title.type)) {
+      setEditNews((prevCreateNews) => ({ ...prevCreateNews, video: title.name }));
+ 
+    }
+   };
   const handleEvent = (e) => {
     e.preventDefault();
 
@@ -135,7 +145,7 @@ function FormUpdatePosts(props) {
               />
 
               <TextField
-                id='filled-select-currency menu-items'
+                id='filled-select-currency'
                 select
                 label='Sự kiện'
                 defaultValue='Chọn sự kiện'
@@ -164,7 +174,7 @@ function FormUpdatePosts(props) {
             </div>
 
             <div className='uploadfile-btn'>
-              <ButtonUploadFile />
+              <ButtonUploadFile onFileUpload = {handleImageUpload} />
             </div>
 
             <Form.Group

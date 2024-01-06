@@ -52,7 +52,7 @@ export default function TableUpdatePages({ getDataPages }) {
               .map((row) => (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
                   <TableCell align='left'>{row.title}</TableCell>
-                  <TableCell align='right'>{row.shortTitle}</TableCell>
+                  <TableCell align='right'>{row.short_title}</TableCell>
                   <TableCell align='right'>{row.content}</TableCell>
                   <TableCell align='right'>{row.category_name}</TableCell>
                   <TableCell align='right'>

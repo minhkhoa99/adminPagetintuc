@@ -1,17 +1,25 @@
 #outlined-multiline-flexible {
-  width: 75vh;
-  /* Sử dụng đơn vị phần trăm để làm cho nó responsive */
-  max-width: 500px;
-  /* Đặt chiều rộng tối đa nếu màn hình lớn hơn */
-  height: 50px;
+  width: 50vw;
+  max-width: 500px; /* Tăng kích thước tối đa cho input */
+  height: 50%;
 }
 
 .modal-content {
-  width: 90vw;
-  /* Sử dụng đơn vị viewport width để làm cho nó responsive */
-  max-width: 800px;
-  /* Đặt chiều rộng tối đa nếu màn hình lớn hơn */
+  display: flex;
+  flex-wrap: wrap;
+  width: 90vw; /* Sử dụng 90% chiều rộng viewport */
+  max-width: 800px; /* Tăng kích thước tối đa */
   height: 90%;
+  margin: 0 auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    max-width: none;
+  }
+
+  @media only screen and (min-width: 601px) and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .short-title {
@@ -23,7 +31,6 @@
 .title-form {
   display: flex;
   flex-wrap: wrap;
-  /* Cho phép các thành phần chồng lên nhau khi không có đủ không gian */
   justify-content: space-between;
   margin-bottom: 3vh;
 }
@@ -35,9 +42,21 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+#filled-select-currency{
+  width: 15vh;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 500px;
 
-;
+}
+.form-text-data {
+  width: 100%;
+  max-width: 770px;
+}
 
-#menu-items {
-  width: 300px !important;
+@media only screen and (max-width: 200px) {
+  .form-text-data {
+    width: 100%;
+    max-width: none;
+  }
 }

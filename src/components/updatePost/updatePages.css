@@ -4,3 +4,28 @@
     justify-content: space-between;
     flex-wrap: wrap;
 };
+
+#outlined-multiline-flexible {
+    width: 50vw;
+    max-width: 500px; /* Tăng kích thước tối đa cho input */
+    height: 50%;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90vw; /* Sử dụng 90% chiều rộng viewport */
+    max-width: 800px; /* Tăng kích thước tối đa */
+    height: 90%;
+    margin: 0 auto;
+  
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      max-width: none;
+    }
+  
+    @media only screen and (min-width: 601px) and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+  
