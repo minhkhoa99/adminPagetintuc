@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import ButtonUploadFile from "./ButtonUploadFile";
-import ButtonCheck from "./ButtonCheck";
 import axios from "axios";
 import { message } from "antd";
 import './updatePages.css'
@@ -98,8 +97,16 @@ function FormUpdatePosts(props) {
       events.preventDefault();
       if (!getIdNews) {
         message.error("Không tìm thấy id bài viết");
+        return false
+      };
+
+      if(!editNews.status || !editNews.CategoryId ||!editNews.title) {
+        console.log(editNews.CategoryId);
+        message.error('Tiêu đề hoặc sự kiện không được để trống')
+        return false
       }
-      await axios.put(`http://localhost:8000/new/${getIdNews}`, {
+   
+     const updateNews = await axios.put(`http://localhost:8000/new/${getIdNews}`, {
         title: editNews.title,
         shortTitle: editNews.shortTitle,
         image: editNews.image,
@@ -108,6 +115,10 @@ function FormUpdatePosts(props) {
         status: editNews.status,
         CategoryId: editNews.CategoryId,
       });
+
+      if(!updateNews) {
+        return false
+      }
       message.success("Cập nhật bài viết thành công");
 
       handleClose();
@@ -182,7 +193,7 @@ function FormUpdatePosts(props) {
               controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
-              <ButtonCheck />
+             
               <Form.Control
                 as='textarea'
                 rows={10}

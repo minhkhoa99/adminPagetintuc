@@ -93,7 +93,13 @@ function FormCreatePosts() {
     try {
       events.preventDefault();
 
-      await axios.post("http://localhost:8000/new", {
+      if(!createNews.status || !createNews.CategoryId ||!createNews.title) {
+        console.log(createNews.CategoryId);
+        message.error('Tiêu đề hoặc sự kiện không được để trống')
+        return false
+      }
+   
+    const newsCreate = await axios.post("http://localhost:8000/new", {
         title: createNews.title,
         shortTitle: createNews.shortTitle,
         image: createNews.image,
@@ -103,7 +109,10 @@ function FormCreatePosts() {
         CategoryId: createNews.CategoryId,
       });
 
-      console.log(createNews);
+      if(!newsCreate) {
+        return false
+      }
+
       message.success("Tạo mới bài viết thành công");
 
       handleClose();

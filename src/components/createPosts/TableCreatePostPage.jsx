@@ -11,6 +11,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import moment from "moment";
+import { message } from "antd";
 
 export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
@@ -49,6 +50,8 @@ export default function TableCreatePostPage() {
       // Cập nhật state hoặc gọi lại hàm lấy dữ liệu mới (nếu cần)
       const updatedData = getData.filter((post) => post.id !== postId);
       setGetData(updatedData);
+
+      message.success('Xóa bài viết thành công')
     } catch (error) {
       console.log(error);
       // Xử lý lỗi xóa bài viết nếu cần
