@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,14 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import FormUpdatePages from "./FormUpdatePages";
-import axios from "axios";
 import moment from "moment";
 
-export default function TableUpdatePages() {
+export default function TableUpdatePages({ getDataPages }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [getData, setGetData] = useState([]);
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -24,22 +21,6 @@ export default function TableUpdatePages() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const getAllData = async () => {
-    await axios
-      .get("http://localhost:8000/new")
-      .then((response) => {
-        setGetData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        throw error;
-      });
-  };
-
-  useEffect(() => {
-    getAllData();
-  }, []);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -66,7 +47,7 @@ export default function TableUpdatePages() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {getData
+            {getDataPages
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
@@ -89,7 +70,7 @@ export default function TableUpdatePages() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={getData.length}
+        count={getDataPages.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

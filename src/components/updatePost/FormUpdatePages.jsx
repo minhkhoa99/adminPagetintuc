@@ -6,13 +6,14 @@ import Modal from "react-bootstrap/Modal";
 import ButtonUploadFile from "./ButtonUploadFile";
 import ButtonCheck from "./ButtonCheck";
 import axios from "axios";
+import { message } from "antd";
 
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
   const [values, setvalue] = useState("");
   const [category, setCategory] = useState([]);
   const [editNews, setEditNews] = useState({
-    id:null,
+    id: null,
     title: "",
     shortTitle: "",
     image: "",
@@ -31,7 +32,6 @@ function FormUpdatePosts(props) {
         .get("http://localhost:8000/category")
         .then((fetchData) => {
           setCategory(fetchData.data.data);
-          
         })
         .catch((err) => console.log(err));
     }
@@ -39,30 +39,30 @@ function FormUpdatePosts(props) {
 
     async function getById() {
       await axios
-      .get(`http://localhost:8000/new/${props.postId}`)
-      .then((fetchData) => {
-        setGetIdNews(fetchData.data.data.id);
-        
-      })
-      .catch((err) => console.log(err));
+        .get(`http://localhost:8000/new/${props.postId}`)
+        .then((fetchData) => {
+          setGetIdNews(fetchData.data.data.id);
+        })
+        .catch((err) => console.log(err));
     }
 
-    getById()
+    getById();
   }, []);
 
   const handleEvent = (e) => {
     e.preventDefault();
 
     const selectedValue = e.target.value;
-    const selectedMenuItem = category.find((option) => option.id === selectedValue);
+    const selectedMenuItem = category.find(
+      (option) => option.id === selectedValue
+    );
 
-    if(selectedMenuItem) {
+    if (selectedMenuItem) {
       const { id } = selectedMenuItem;
 
       setEditNews({ ...editNews, CategoryId: id });
-
     }
-   
+
     setvalue(selectedValue);
   };
   useEffect(() => {
@@ -86,111 +86,113 @@ function FormUpdatePosts(props) {
   const handleeditNews = async (events) => {
     try {
       events.preventDefault();
-      if(getIdNews) {
-         await axios.put(`http://localhost:8000/new/${getIdNews}`, {
-          title: editNews.title,
-          shortTitle: editNews.shortTitle,
-          image: editNews.image,
-          video: editNews.video,
-          content: editNews.content,
-          status: editNews.status,
-          CategoryId: editNews.CategoryId,
-        });
+      if (!getIdNews) {
+        message.error("Không tìm thấy id bài viết");
       }
-    
+      await axios.put(`http://localhost:8000/new/${getIdNews}`, {
+        title: editNews.title,
+        shortTitle: editNews.shortTitle,
+        image: editNews.image,
+        video: editNews.video,
+        content: editNews.content,
+        status: editNews.status,
+        CategoryId: editNews.CategoryId,
+      });
+      message.success("Cập nhật bài viết thành công");
+
       handleClose();
-     
     } catch (error) {
       console.log(error);
+      message.error("Cập nhật bài viết thất bại");
       throw error;
     }
   };
   return (
     <>
-    <Button
-      variant="primary"
-      onClick={handleShow}
-      className="span-btn-create"
-    >
-      Thêm sự kiện
-    </Button>
+      <Button
+        variant='primary'
+        onClick={handleShow}
+        className='span-btn-create'
+      >
+        Cập nhật bài viết
+      </Button>
 
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Thêm sự kiện</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <div className="title-form ">
-            <TextField
-              id="outlined-multiline-flexible"
-              label="Nhập chủ đề sự kiện"
-              name="title"
-              value={editNews.title}
-              onChange={handleChange}
-              multiline
-              maxRows={4}
-            />
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Thêm sự kiện</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <div className='title-form '>
+              <TextField
+                id='outlined-multiline-flexible'
+                label='Nhập chủ đề sự kiện'
+                name='title'
+                value={editNews.title}
+                onChange={handleChange}
+                multiline
+                maxRows={4}
+              />
 
-            <TextField
-              id="filled-select-currency menu-items"
-              select
-              label="Sự kiện"
-              defaultValue="Chọn sự kiện"
-              helperText="Chọn sự kiện"
-              onChange={handleEvent}
-              variant="filled"
+              <TextField
+                id='filled-select-currency menu-items'
+                select
+                label='Sự kiện'
+                defaultValue='Chọn sự kiện'
+                helperText='Chọn sự kiện'
+                onChange={handleEvent}
+                variant='filled'
+              >
+                {category.map((option) => (
+                  <MenuItem key={option.id} value={option.id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+
+            <div className='short-title'>
+              <TextField
+                id='outlined-multiline-flexible'
+                name='shortTitle'
+                value={editNews.shortTitle}
+                onChange={handleChange}
+                label='Nhập tiêu đề ngắn'
+                multiline
+                maxRows={4}
+              />
+            </div>
+
+            <div className='uploadfile-btn'>
+              <ButtonUploadFile />
+            </div>
+
+            <Form.Group
+              className='mb-3'
+              controlId='exampleForm.ControlTextarea1'
             >
-              {category.map((option) => (
-                <MenuItem key={option.id} value={option.id } >
-                  {option.name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-
-          <div className="short-title">
-            <TextField
-              id="outlined-multiline-flexible"
-              name="shortTitle"
-              value={editNews.shortTitle}
-              onChange={handleChange}
-              label="Nhập tiêu đề ngắn"
-              multiline
-              maxRows={4}
-            />
-          </div>
-
-          <div className="uploadfile-btn">
-            <ButtonUploadFile />
-          </div>
-
-          <Form.Group
-            className="mb-3"
-            controlId="exampleForm.ControlTextarea1"
-          >
-            <Form.Label>Nội dung sự kiện</Form.Label>
-            <ButtonCheck />
-            <Form.Control
-              as="textarea"
-              rows={10}
-              name="content"
-              value={editNews.content}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Đóng
-        </Button>
-        <Button variant="primary" onClick={handleeditNews}>
-          Cập nhật
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  </>
+              <Form.Label>Nội dung sự kiện</Form.Label>
+              <ButtonCheck />
+              <Form.Control
+                as='textarea'
+                rows={10}
+                name='content'
+                value={editNews.content}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={handleClose}>
+            Đóng
+          </Button>
+          <Button variant='primary' onClick={handleeditNews}>
+            Cập nhật
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 }
 

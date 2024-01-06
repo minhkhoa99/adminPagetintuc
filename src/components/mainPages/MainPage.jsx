@@ -5,12 +5,13 @@ import "./css/mainpage.css";
 import axios from "axios";
 const MainPages = () => {
   const [getData, setGetData] = useState([]);
-
+  const [filteredData, setFilteredData] = useState([]);
   const getAllData = async () => {
     await axios
       .get("http://localhost:8000/new")
       .then((response) => {
         setGetData(response.data.data);
+        setFilteredData(response.data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -27,9 +28,9 @@ const MainPages = () => {
     const filteredData = getData.filter((row) => {
       return row.title.toLowerCase().includes(searchTerm.toLowerCase());
     });
-    console.log(searchTerm);
+
     // // Pass the filtered data to HomePages
-    setGetData(filteredData);
+    setFilteredData(filteredData);
     return filteredData;
   };
 
@@ -48,7 +49,7 @@ const MainPages = () => {
             </div>
           </div>
           <div className='border-0'>
-            <HomePages getDataPages={getData}></HomePages>
+            <HomePages getDataPages={filteredData}></HomePages>
           </div>
         </div>
       </main>

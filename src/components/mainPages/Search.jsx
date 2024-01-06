@@ -5,6 +5,11 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function Search(handleSearch) {
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent form submission on Enter key
+    }
+  };
   return (
     <Fragment>
       <Paper
@@ -15,6 +20,7 @@ export default function Search(handleSearch) {
         <InputBase
           className='input-search'
           sx={{ ml: 1, flex: 1 }}
+          onKeyDown={handleKeyDown}
           onChange={(event) => handleSearch.searchData(event.target.value)}
           placeholder='Nhập tiêu đề bài viết'
           inputProps={{ "aria-label": "search bài viết" }}

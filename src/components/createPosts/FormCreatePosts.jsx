@@ -8,6 +8,7 @@ import "./postpage.css";
 
 import ButtonCheck from "./ButtonCheck";
 import ButtonUploadFile from "./ButtonUploadFile";
+import { message } from "antd";
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -17,6 +18,7 @@ function FormCreatePosts() {
   const [createNews, setCreateNews] = useState({
     title: "",
     shortTitle: "",
+    host_new: "0",
     image: "",
     video: "",
     content: "",
@@ -88,10 +90,12 @@ function FormCreatePosts() {
         status: createNews.status,
         CategoryId: createNews.CategoryId,
       });
+      message.success("Tạo mới bài viết thành công");
 
       handleClose();
     } catch (error) {
       console.log(error);
+      message.error("Tạo mới bài viết thất bại");
       throw error;
     }
   };
