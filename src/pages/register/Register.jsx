@@ -1,7 +1,18 @@
 import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
 const onFinish = (values) => {
-    console.log('Success:', values);
+    axios.post("http://localhost:8000/user/", {
+        username: values.username,
+        password: values.password
+    })
+.then((data) => {
+    if(data.data.message === "success" ){
+        alert("Sign Up Success")
+        window.location.href = "/admin/user"
+    }
+})
+.catch((err) => alert("registration failed"))
 };
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -26,8 +37,8 @@ const Register = () => (
         autoComplete="off"
     >
         <Form.Item
-            label="Name"
-            name="name"
+            label="User Name"
+            name="username"
             rules={[
                 {
                     required: true,
@@ -37,19 +48,6 @@ const Register = () => (
         >
             <Input />
         </Form.Item>
-        <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your email!',
-                },
-            ]}
-        >
-            <Input />
-        </Form.Item>
-
         <Form.Item
             label="Password"
             name="password"

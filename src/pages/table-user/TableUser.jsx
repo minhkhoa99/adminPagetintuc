@@ -1,49 +1,80 @@
-import React from 'react';
-import { Button, Space, Table, Tag } from 'antd';
-const { Column, ColumnGroup } = Table;
-const data = [
-    {
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Space, Table } from "antd";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const { Column } = Table;
 
-        UserName: 32,
-        password: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
-    },
-    {
+const TableUser = () => {
+  const [user, setUser] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/user/")
+      .then((data) => setUser(data.data.data))
+      .catch((err) => console.log(err));
+  }, []);
 
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
-    },
-    {
-        key: '3',
-        firstName: 'Joe',
-        lastName: 'Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
-    },
-];
-const TableUser = () => (
-    <Table dataSource={data}>
+  const handleClick = (record) => {
+    navigate(`/admin/user/${record.id}`);
+  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-        <Column title="User Name" dataIndex="UserName" key="email" />
-        <Column title="PassWord" dataIndex="password" key="password" />
+  const handleOk = (id) => {
+    axios.delete(`http://localhost:8000/user/${id}`)
+    .then((data) => alert("Delete Successs"))
+    .catch((err) => console.log(err))
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const handleDelete = (record) => {
+    handleOk(record.id)
+   
+  }
+  return (
+    <div>
+        <Table dataSource={user}>
+      <Column title="User Name" dataIndex="username" key="username" />
+      <Column title="PassWord" dataIndex="password" key="password" />
 
-        <Column
-            title="Action"
-            key="action"
-            render={(_, record) => (
-                <Space size="middle">
-                    <Button type="primary" >
-                        EDIT
-                    </Button>
-                    <Button type="primary" danger >
-                        DELETE
-                    </Button>
-
-                </Space>
-            )}
-        />
-    </Table>
-);
+      <Column
+        title="Action"
+        key="action"
+        render={(_, record) => (
+          <Space size="middle">
+            <Button
+              type="primary"
+              onClick={() => {
+                handleClick(record);
+              }}
+            >
+              EDIT
+            </Button>
+            <Button
+              type="primary"
+              danger
+              onClick={() => {
+                setIsModalOpen(true);
+                handleDelete(record)
+              }}
+            >
+              DELETE
+            </Button>
+          </Space>
+        )}
+      />
+    </Table> 
+    <Modal
+        title="DELETE"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>Bạn có muốn xóa người dùng này không ?</p>
+      </Modal>
+    </div>
+   
+  );
+};
 export default TableUser;

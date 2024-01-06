@@ -81,12 +81,12 @@ const Siderbar = () => {
                   className="sidebar-dropdown list-unstyled collapse"
                 >
                   <li className="sidebar-item">
-                    <a href="#" className="sidebar-link">
+                    <a href="/admin/user" className="sidebar-link">
                      Quản lý tài khoản
                     </a>
                   </li>
                   <li className="sidebar-item">
-                    <a href="#" className="sidebar-link">
+                    <a href="/admin/register/" className="sidebar-link">
                       Tạo tài khoản
                     </a>
                   </li>

@@ -5,6 +5,9 @@
 ::before {
     box-sizing: border-box;
 }
+.side-bar-none{
+    display: none;
+}
 
 body {
     font-family: 'Poppins', sans-serif;

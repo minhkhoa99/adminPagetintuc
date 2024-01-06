@@ -1,12 +1,30 @@
 import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
+import Cookies from "js-cookie"
+
+
 const onFinish = (values) => {
     console.log('Success:', values);
+    axios.post("http://localhost:8000/auth/login", {
+        username: values.UserName,
+        password: values.password
+    })
+    .then((data) => {
+        if(data.data.status === 200){
+            alert("Logged in successfully")
+            const token = data.data.token;
+            Cookies.set('Authorization', token, { sameSite: 'strict', secure: true });
+            window.location.href = "/admin/home-page"
+        }
+    })
+    .catch((err) => alert("Wrong login name or password"))
 };
 const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
 };
 const Login = () => (
+
     <Form
         name="basic"
         labelCol={{
@@ -17,6 +35,9 @@ const Login = () => (
         }}
         style={{
             maxWidth: 600,
+            textAlign: "center",
+            margin: "auto",
+            marginTop: "10%"
         }}
         initialValues={{
             remember: true,
@@ -26,12 +47,12 @@ const Login = () => (
         autoComplete="off"
     >
         <Form.Item
-            label="Email"
-            name="email"
+            label="User Name"
+            name="UserName"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your email!',
+                    message: 'Please input your User Name!',
                 },
             ]}
         >

@@ -1,5 +1,4 @@
 import MainPages from "../../components/mainPages/MainPage.jsx";
-import Navbar from "../../components/navbar/Navbar.jsx";
 
 import './adminPage.css';
 import '../../js/script.js';
