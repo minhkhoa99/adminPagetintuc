@@ -5,10 +5,11 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
-import ButtonUploadFile from "./ButtonUploadFile";
 import { message } from "antd";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
+import "react-quill/dist/quill.snow.css";
+import "./TextEditor.css";
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -31,7 +32,7 @@ function FormCreatePosts() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
 
   useEffect(() => {
     async function getData() {
@@ -96,12 +97,15 @@ function FormCreatePosts() {
   const handleCreateNews = async (events) => {
     try {
       events.preventDefault();
+      if (createNews.content.length < 50) {
+        message.error("Vui lòng nhập tối đa 50 ký tự");
+        return false;
+      }
 
       if (!createNews.status || !createNews.CategoryId || !createNews.title) {
         message.error("Tiêu đề hoặc sự kiện không được để trống");
         return false;
       }
-      console.log(createNews);
 
       const newsCreate = await axiosInstance.post("http://localhost:8000/new", {
         title: createNews.title,
@@ -127,12 +131,9 @@ function FormCreatePosts() {
     }
   };
 
-  const handleEditor = (event, editor) => {
-    setData(editor.getData())
-
-    console.log(data);
-  }
-
+  const ondescription = (value) => {
+    setCreateNews({ ...createNews, content: value });
+  };
   return (
     <>
       <Button
@@ -189,22 +190,22 @@ function FormCreatePosts() {
               />
             </div>
 
-            <div className='uploadfile-btn'>
-              <ButtonUploadFile onFileUpload={handleImageUpload} />
-            </div>
-
             <Form.Group
               className='mb-3 form-text-data'
               controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
-
-              <CKEditor
-                editor={ClassicEditor}
-                data={createNews.content}
-                onChange={(e, editor) => { handleEditor(e, editor) }}
-
+              <EditorToolbar toolbarId={"t1"} />
+              <ReactQuill
+                theme='snow'
+                value={createNews.content}
+                onChange={ondescription}
+                placeholder={"Nhập nội dung bài viết...."}
+                modules={modules("t1")}
+                formats={formats}
               />
+
+              {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}
             </Form.Group>
           </Form>
         </Modal.Body>

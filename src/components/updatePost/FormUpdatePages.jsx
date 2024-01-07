@@ -4,9 +4,14 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import ButtonUploadFile from "./ButtonUploadFile";
-import axios from "axios";
+import { axiosInstance } from "../../js/auth.config";
+
 import { message } from "antd";
-import './updatePages.css'
+import "./updatePages.css";
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
+import "react-quill/dist/quill.snow.css";
+import "./TextEditor.css";
 
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
@@ -28,7 +33,7 @@ function FormUpdatePosts(props) {
 
   useEffect(() => {
     async function getData() {
-      await axios
+      await axiosInstance
         .get("http://localhost:8000/category")
         .then((fetchData) => {
           setCategory(fetchData.data.data);
@@ -38,7 +43,7 @@ function FormUpdatePosts(props) {
     getData();
 
     async function getById() {
-      await axios
+      await axiosInstance
         .get(`http://localhost:8000/new/${props.postId}`)
         .then((fetchData) => {
           setGetIdNews(fetchData.data.data.id);
@@ -50,14 +55,18 @@ function FormUpdatePosts(props) {
   }, []);
 
   const handleImageUpload = (title, isImage, isVideo) => {
-    if(isImage.includes(title.type)){
-      setEditNews((prevCreateNews) => ({ ...prevCreateNews, image: title.name }));
- 
-    }else if(isVideo.includes(title.type)) {
-      setEditNews((prevCreateNews) => ({ ...prevCreateNews, video: title.name }));
- 
+    if (isImage.includes(title.type)) {
+      setEditNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        image: title.name,
+      }));
+    } else if (isVideo.includes(title.type)) {
+      setEditNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        video: title.name,
+      }));
     }
-   };
+  };
   const handleEvent = (e) => {
     e.preventDefault();
 
@@ -95,29 +104,38 @@ function FormUpdatePosts(props) {
   const handleeditNews = async (events) => {
     try {
       events.preventDefault();
+
+      if (editNews.content.length < 50) {
+        message.error("Vui lòng nhập tối đa 50 ký tự");
+        return false;
+      }
+
       if (!getIdNews) {
         message.error("Không tìm thấy id bài viết");
-        return false
-      };
-
-      if(!editNews.status || !editNews.CategoryId ||!editNews.title) {
-        console.log(editNews.CategoryId);
-        message.error('Tiêu đề hoặc sự kiện không được để trống')
-        return false
+        return false;
       }
-   
-     const updateNews = await axios.put(`http://localhost:8000/new/${getIdNews}`, {
-        title: editNews.title,
-        shortTitle: editNews.shortTitle,
-        image: editNews.image,
-        video: editNews.video,
-        content: editNews.content,
-        status: editNews.status,
-        CategoryId: editNews.CategoryId,
-      });
 
-      if(!updateNews) {
-        return false
+      if (!editNews.status || !editNews.CategoryId || !editNews.title) {
+        console.log(editNews.CategoryId);
+        message.error("Tiêu đề hoặc sự kiện không được để trống");
+        return false;
+      }
+
+      const updateNews = await axiosInstance.put(
+        `http://localhost:8000/new/${getIdNews}`,
+        {
+          title: editNews.title,
+          shortTitle: editNews.shortTitle,
+          image: editNews.image,
+          video: editNews.video,
+          content: editNews.content,
+          status: editNews.status,
+          CategoryId: editNews.CategoryId,
+        }
+      );
+
+      if (!updateNews) {
+        return false;
       }
       message.success("Cập nhật bài viết thành công");
 
@@ -127,6 +145,10 @@ function FormUpdatePosts(props) {
       message.error("Cập nhật bài viết thất bại");
       throw error;
     }
+  };
+
+  const ondescription = (value) => {
+    setEditNews({ ...editNews, content: value });
   };
   return (
     <>
@@ -185,7 +207,7 @@ function FormUpdatePosts(props) {
             </div>
 
             <div className='uploadfile-btn'>
-              <ButtonUploadFile onFileUpload = {handleImageUpload} />
+              <ButtonUploadFile onFileUpload={handleImageUpload} />
             </div>
 
             <Form.Group
@@ -193,13 +215,14 @@ function FormUpdatePosts(props) {
               controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
-             
-              <Form.Control
-                as='textarea'
-                rows={10}
-                name='content'
+              <EditorToolbar toolbarId={"t1"} />
+              <ReactQuill
+                theme='snow'
                 value={editNews.content}
-                onChange={handleChange}
+                onChange={ondescription}
+                placeholder={"Nhập nội dung bài viết...."}
+                modules={modules("t1")}
+                formats={formats}
               />
             </Form.Group>
           </Form>

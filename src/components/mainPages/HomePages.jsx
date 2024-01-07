@@ -60,7 +60,7 @@ export default function HomePages({ getDataPages }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100, 1000, 5000]}
         component='div'
         count={getDataPages.length}
         rowsPerPage={rowsPerPage}
