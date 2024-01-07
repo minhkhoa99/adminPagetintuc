@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import axios from "axios";
+// import axios from "axios";
+import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
 import ButtonUploadFile from "./ButtonUploadFile";
 import { message } from "antd";
+import axios from "axios";
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -31,7 +33,7 @@ function FormCreatePosts() {
 
   useEffect(() => {
     async function getData() {
-      await axios
+      await axiosInstance
         .get("http://localhost:8000/category")
         .then((fetchData) => {
           setCategory(fetchData.data.data);
@@ -65,7 +67,7 @@ function FormCreatePosts() {
 
     if (selectedMenuItem) {
       const { id } = selectedMenuItem;
-
+      console.log("ids: ", id);
       setCreateNews({ ...createNews, CategoryId: id });
     }
 
@@ -93,24 +95,24 @@ function FormCreatePosts() {
     try {
       events.preventDefault();
 
-      if(!createNews.status || !createNews.CategoryId ||!createNews.title) {
-        console.log(createNews.CategoryId);
-        message.error('Tiêu đề hoặc sự kiện không được để trống')
-        return false
+      if (!createNews.status || !createNews.CategoryId || !createNews.title) {
+        message.error("Tiêu đề hoặc sự kiện không được để trống");
+        return false;
       }
-   
-    const newsCreate = await axios.post("http://localhost:8000/new", {
+      console.log(createNews);
+
+      const newsCreate = await axiosInstance.post("http://localhost:8000/new", {
         title: createNews.title,
         shortTitle: createNews.shortTitle,
         image: createNews.image,
         video: createNews.video,
         content: createNews.content,
         status: createNews.status,
-        CategoryId: createNews.CategoryId,
+        category_id: createNews.CategoryId,
       });
 
-      if(!newsCreate) {
-        return false
+      if (!newsCreate) {
+        return false;
       }
 
       message.success("Tạo mới bài viết thành công");
@@ -126,9 +128,9 @@ function FormCreatePosts() {
   return (
     <>
       <Button
-        variant="primary"
+        variant='primary'
         onClick={handleShow}
-        className="span-btn-create"
+        className='span-btn-create'
       >
         Thêm sự kiện
       </Button>
@@ -139,11 +141,11 @@ function FormCreatePosts() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <div className="title-form ">
+            <div className='title-form '>
               <TextField
-                id="outlined-multiline-flexible"
-                label="Nhập chủ đề sự kiện"
-                name="title"
+                id='outlined-multiline-flexible'
+                label='Nhập chủ đề sự kiện'
+                name='title'
                 value={createNews.title}
                 onChange={handleChange}
                 multiline
@@ -151,13 +153,13 @@ function FormCreatePosts() {
               />
 
               <TextField
-                id="filled-select-currency"
+                id='filled-select-currency'
                 select
-                label="Sự kiện"
-                defaultValue="Chọn sự kiện"
-                helperText="Chọn sự kiện"
+                label='Sự kiện'
+                defaultValue='Chọn sự kiện'
+                helperText='Chọn sự kiện'
                 onChange={handleEvent}
-                variant="filled"
+                variant='filled'
               >
                 {category.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
@@ -167,32 +169,32 @@ function FormCreatePosts() {
               </TextField>
             </div>
 
-            <div className="short-title">
+            <div className='short-title'>
               <TextField
-                id="outlined-multiline-flexible"
-                label="Nhập tiêu đề ngắn"
+                id='outlined-multiline-flexible'
+                label='Nhập tiêu đề ngắn'
                 multiline
                 maxRows={4}
-                name="shortTitle"
+                name='shortTitle'
                 value={createNews.shortTitle}
                 onChange={handleChange}
               />
             </div>
 
-            <div className="uploadfile-btn">
+            <div className='uploadfile-btn'>
               <ButtonUploadFile onFileUpload={handleImageUpload} />
             </div>
 
             <Form.Group
-              className="mb-3 form-text-data"
-              controlId="exampleForm.ControlTextarea1"
+              className='mb-3 form-text-data'
+              controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
 
               <Form.Control
-                as="textarea"
+                as='textarea'
                 rows={10}
-                name="content"
+                name='content'
                 value={createNews.content}
                 onChange={handleChange}
               />
@@ -200,10 +202,10 @@ function FormCreatePosts() {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant='secondary' onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleCreateNews}>
+          <Button variant='primary' onClick={handleCreateNews}>
             Tạo mới
           </Button>
         </Modal.Footer>
