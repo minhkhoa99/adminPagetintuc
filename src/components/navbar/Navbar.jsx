@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {toggleSidebar, toggleTheme, isLight} from "../../js/script";
 import { Button } from "react-bootstrap";
 import './navbar.css';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+
+  const navigate = useNavigate()
+  const handelLogout = () => {
+    Cookies.remove('Authorization');
+    navigate("/admin/")
+    window.location.reload();
+  }
 
     useEffect(() => {
         const sidebarToggle = document.querySelector("#sidebar-toggle");
@@ -12,6 +21,7 @@ export default function Navbar() {
     const handleSidebarToggle = () => {
       toggleSidebar();
     };
+
 
     const handleThemeToggle = () => {
       toggleTheme();
@@ -28,6 +38,7 @@ export default function Navbar() {
     if (isLight()) {
       toggleRootClass();
     }
+   
 
     // Cleanup event listeners when component unmounts
     return () => {
@@ -57,7 +68,7 @@ export default function Navbar() {
                 <div className="navbar-collapse navbar">
                     <ul className="navbar-nav">
                         <li className="nav-item dropdown">
-                            <Button className="logout" id="btn-logout">
+                            <Button className="logout" id="btn-logout" onClick={() => {handelLogout()}}>
                             Đăng xuất
                             </Button>
                         </li>

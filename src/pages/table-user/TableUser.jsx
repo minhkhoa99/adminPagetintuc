@@ -8,33 +8,26 @@ const TableUser = () => {
   const [user, setUser] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    axios
+     axios
       .get("http://localhost:8000/user/")
       .then((data) => setUser(data.data.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [user]);
+  const newUser = user.filter((e) => e.username !== "admin")
 
   const handleClick = (record) => {
     navigate(`/admin/user/${record.id}`);
   };
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOk = (id) => {
-    axios.delete(`http://localhost:8000/user/${id}`)
-    .then((data) => alert("Delete Successs"))
-    .catch((err) => console.log(err))
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
   const handleDelete = (record) => {
-    handleOk(record.id)
+    axios.delete(`http://localhost:8000/user/${record.id}`)
+    .then((data) => console.log(data.data))
+    .catch((err) => console.log(err))
    
   }
   return (
     <div>
-        <Table dataSource={user}>
+        <Table dataSource={newUser}>
       <Column title="User Name" dataIndex="username" key="username" />
       <Column title="PassWord" dataIndex="password" key="password" />
 
@@ -55,7 +48,6 @@ const TableUser = () => {
               type="primary"
               danger
               onClick={() => {
-                setIsModalOpen(true);
                 handleDelete(record)
               }}
             >
@@ -65,14 +57,6 @@ const TableUser = () => {
         )}
       />
     </Table> 
-    <Modal
-        title="DELETE"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Bạn có muốn xóa người dùng này không ?</p>
-      </Modal>
     </div>
    
   );

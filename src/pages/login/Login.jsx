@@ -1,98 +1,100 @@
-import React from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
-import axios from 'axios';
-import Cookies from "js-cookie"
+import React from "react";
+import { Form, Input, Button, Checkbox, Card, message } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Typography } from "antd";
+import axios from "axios";
+import Cookies from "js-cookie";
+import Swal from "sweetalert"
+const { Title } = Typography;
 
+const Login = () => {
 
-const onFinish = (values) => {
-    console.log('Success:', values);
+  const onFinish = (values) => {
+    console.log(values);
     axios.post("http://localhost:8000/auth/login", {
-        username: values.UserName,
-        password: values.password
-    })
-    .then((data) => {
-        if(data.data.status === 200){
-            alert("Logged in successfully")
-            const token = data.data.token;
-            Cookies.set('Authorization', token, { sameSite: 'strict', secure: true });
-            window.location.href = "/admin/home-page"
-        }
-    })
-    .catch((err) => alert("Wrong login name or password"))
-};
-const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
-const Login = () => (
+         username: values.username,
+         password: values.password
+     })
+     .then((data) => {
+      console.log(data);
+         if(data.status === 200){
+             const token = data.data.token;
+             const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+             Cookies.set('Authorization', token, { expires, sameSite: 'strict', secure: true });
+            Swal({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Your work has been saved',
+              showConfirmButton: false,
+              timer: 1500
+            })
+             setTimeout(() => {
+              window.location.href = "/admin/home-page";
+            }, 2000);
+         }
+     })
+     .catch((err) => alert("Wrong login name or password"))
+  };
 
-    <Form
-        name="basic"
-        labelCol={{
-            span: 8,
-        }}
-        wrapperCol={{
-            span: 16,
-        }}
-        style={{
-            maxWidth: 600,
-            textAlign: "center",
-            margin: "auto",
-            marginTop: "10%"
-        }}
-        initialValues={{
-            remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
+
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
     >
-        <Form.Item
-            label="User Name"
-            name="UserName"
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your User Name!',
-                },
-            ]}
+      <Card style={{ width: 500 }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Title level={2}>LOGIN ADMIN</Title>
+        </div>
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
         >
-            <Input />
-        </Form.Item>
-
-        <Form.Item
-            label="Password"
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+          <Form.Item
             name="password"
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your password!',
-                },
-            ]}
-        >
-            <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{
-                offset: 8,
-                span: 16,
-            }}
-        >
-            <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item
-            wrapperCol={{
-                offset: 8,
-                span: 16,
-            }}
-        >
-            <Button type="primary" htmlType="submit">
-                Submit
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              block
+            >
+              Log in
             </Button>
-        </Form.Item>
-    </Form>
-);
+          </Form.Item>
+        </Form>
+      </Card>
+    </div>
+  );
+};
+
 export default Login;
