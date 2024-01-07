@@ -21,12 +21,25 @@ function FormUpdatePosts(props) {
     id: null,
     title: "",
     shortTitle: "",
+    host_new: "",
     image: "",
     video: "",
     content: "",
     status: "",
     CategoryId: "",
   });
+  const dataNew = {
+    hotNews: {
+      id: 1,
+      label: "Tin Hot",
+      value: "1"
+    },
+    new: {
+      id: 0,
+      label: "Tin Thường",
+      value: "0"
+    }
+  }
   const [getIdNews, setGetIdNews] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -83,6 +96,10 @@ function FormUpdatePosts(props) {
 
     setvalue(selectedValue);
   };
+  const handleHotNew = (e) => {
+    const selectedValue = e.target.value;
+    setEditNews({...editNews, host_new: selectedValue})
+  }
   useEffect(() => {
     if (editNews.title !== "") {
       editNews.status = "1";
@@ -128,6 +145,7 @@ function FormUpdatePosts(props) {
           shortTitle: editNews.shortTitle,
           image: editNews.image,
           video: editNews.video,
+          host_new: editNews.host_new,
           content: editNews.content,
           status: editNews.status,
           CategoryId: editNews.CategoryId,
@@ -191,6 +209,35 @@ function FormUpdatePosts(props) {
                     {option.name}
                   </MenuItem>
                 ))}
+              </TextField>
+            </div>
+
+            <div className='short-title title-form '>
+              <TextField
+                id='outlined-multiline-flexible'
+                label='Nhập tiêu đề ngắn'
+                multiline
+                maxRows={4}
+                name='shortTitle'
+                value={editNews.shortTitle}
+                onChange={handleChange}
+              />
+               <TextField
+                id='filled-select-currency'
+                select
+                label='Loại Tin'
+                defaultValue='Chọn sự kiện'
+                helperText='Chọn sự kiện'
+                value={editNews.host_new}
+                onChange={handleHotNew}
+                variant='filled'
+              >
+                <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
+                    {dataNew.hotNews.label}
+                  </MenuItem>
+                  <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
+                    {dataNew.new.label}
+                  </MenuItem>
               </TextField>
             </div>
 
