@@ -32,9 +32,6 @@ export default function HomePages({ getDataPages }) {
                 Tiêu đề ngắn
               </TableCell>
               <TableCell align='right' style={{ minWidth: 170 }}>
-                Nội dung bài viết
-              </TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
                 Sự kiện
               </TableCell>
               <TableCell align='right' style={{ minWidth: 170 }}>
@@ -47,11 +44,44 @@ export default function HomePages({ getDataPages }) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                  <TableCell align='left'>{row.title}</TableCell>
-                  <TableCell align='right'>{row.short_title}</TableCell>
-                  <TableCell align='right'>{row.content}</TableCell>
-                  <TableCell align='right'>{row.category_name}</TableCell>
-                  <TableCell align='right'>
+                  <TableCell
+                    align='left'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {row.title}
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {row.short_title}
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "40px",
+                    }}
+                  >
+                    {row.category_name}
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "40px",
+                    }}
+                  >
                     {moment(row.createdAt).format("DD-MM-YYYY")}
                   </TableCell>
                 </TableRow>

@@ -67,19 +67,6 @@ function FormUpdatePosts(props) {
     getById();
   }, []);
 
-  const handleImageUpload = (title, isImage, isVideo) => {
-    if (isImage.includes(title.type)) {
-      setEditNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        image: title.name,
-      }));
-    } else if (isVideo.includes(title.type)) {
-      setEditNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        video: title.name,
-      }));
-    }
-  };
   const handleEvent = (e) => {
     e.preventDefault();
 
@@ -251,10 +238,6 @@ function FormUpdatePosts(props) {
                 multiline
                 maxRows={4}
               />
-            </div>
-
-            <div className='uploadfile-btn'>
-              <ButtonUploadFile onFileUpload={handleImageUpload} />
             </div>
 
             <Form.Group

@@ -30,21 +30,19 @@ function FormCreatePosts() {
     hotNews: {
       id: 1,
       label: "Tin Hot",
-      value: "1"
+      value: "1",
     },
     new: {
       id: 0,
       label: "Tin Thường",
-      value: "0"
-    }
-  }
+      value: "0",
+    },
+  };
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
 
   useEffect(() => {
     async function getData() {
@@ -57,20 +55,6 @@ function FormCreatePosts() {
     }
     getData();
   }, []);
-
-  const handleImageUpload = (title, isImage, isVideo) => {
-    if (isImage.includes(title.type)) {
-      setCreateNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        image: title.name,
-      }));
-    } else if (isVideo.includes(title.type)) {
-      setCreateNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        video: title.name,
-      }));
-    }
-  };
 
   const handleEvent = (e) => {
     e.preventDefault();
@@ -92,13 +76,13 @@ function FormCreatePosts() {
     setCreateNews({...createNews, host_new: selectedValue})
   }
 console.log("hot",createNews.host_new);
+
   useEffect(() => {
     if (createNews.title !== "") {
       createNews.status = "1";
       setCreateNews({ ...createNews, status: createNews.status });
     }
   }, [values]);
-  console.log(createNews);
 
   const handleChange = async (events) => {
     try {
@@ -152,6 +136,7 @@ console.log("hot",createNews.host_new);
   const ondescription = (value) => {
     setCreateNews({ ...createNews, content: value });
   };
+
   return (
     <>
       <Button
@@ -192,11 +177,9 @@ console.log("hot",createNews.host_new);
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
-                  
                 ))}
               </TextField>
             </div>
-            
 
             <div className='short-title title-form '>
               <TextField
@@ -208,7 +191,7 @@ console.log("hot",createNews.host_new);
                 value={createNews.shortTitle}
                 onChange={handleChange}
               />
-               <TextField
+              <TextField
                 id='filled-select-currency'
                 select
                 label='Loại Tin'
@@ -219,11 +202,11 @@ console.log("hot",createNews.host_new);
                 variant='filled'
               >
                 <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
-                    {dataNew.hotNews.label}
-                  </MenuItem>
-                  <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
-                    {dataNew.new.label}
-                  </MenuItem>
+                  {dataNew.hotNews.label}
+                </MenuItem>
+                <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
+                  {dataNew.new.label}
+                </MenuItem>
               </TextField>
             </div>
 
@@ -240,6 +223,7 @@ console.log("hot",createNews.host_new);
                 placeholder={"Nhập nội dung bài viết...."}
                 modules={modules("t1")}
                 formats={formats}
+                ima
               />
 
               {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}
