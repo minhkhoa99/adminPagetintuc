@@ -19,20 +19,33 @@ function FormCreatePosts() {
   const [createNews, setCreateNews] = useState({
     title: "",
     shortTitle: "",
-    host_new: "0",
+    host_new: "",
     image: "",
     video: "",
     content: "",
     status: "0",
     CategoryId: "",
   });
+  const dataNew = {
+    hotNews: {
+      id: 1,
+      label: "Host New",
+      value: "1"
+    },
+    new: {
+      id: 0,
+      label: "New",
+      value: "0"
+    }
+  }
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [data, setData] = useState("");
+  const [hostNew, setHotNew] = useState("")
+
 
   useEffect(() => {
     async function getData() {
@@ -70,18 +83,23 @@ function FormCreatePosts() {
 
     if (selectedMenuItem) {
       const { id } = selectedMenuItem;
-      console.log("ids: ", id);
       setCreateNews({ ...createNews, CategoryId: id });
     }
-
     setvalue(selectedValue);
   };
+
+  const handleHotNew = (e) => {
+    const selectedValue = e.target.value;
+    setCreateNews({...createNews, host_new: selectedValue})
+  }
+
   useEffect(() => {
     if (createNews.title !== "") {
       createNews.status = "1";
       setCreateNews({ ...createNews, status: createNews.status });
     }
   }, [values]);
+  console.log(createNews);
 
   const handleChange = async (events) => {
     try {
@@ -112,6 +130,7 @@ function FormCreatePosts() {
         shortTitle: createNews.shortTitle,
         image: createNews.image,
         video: createNews.video,
+        host_new: createNews.host_new,
         content: createNews.content,
         status: createNews.status,
         category_id: createNews.CategoryId,
@@ -174,11 +193,13 @@ function FormCreatePosts() {
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
+                  
                 ))}
               </TextField>
             </div>
+            
 
-            <div className='short-title'>
+            <div className='short-title title-form '>
               <TextField
                 id='outlined-multiline-flexible'
                 label='Nhập tiêu đề ngắn'
@@ -188,6 +209,23 @@ function FormCreatePosts() {
                 value={createNews.shortTitle}
                 onChange={handleChange}
               />
+               <TextField
+                id='filled-select-currency'
+                select
+                label='Loại Tin'
+                defaultValue='Chọn sự kiện'
+                helperText='Chọn sự kiện'
+                value={createNews.host_new}
+                onChange={handleHotNew}
+                variant='filled'
+              >
+                <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
+                    {dataNew.hotNews.label}
+                  </MenuItem>
+                  <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
+                    {dataNew.new.label}
+                  </MenuItem>
+              </TextField>
             </div>
 
             <Form.Group
