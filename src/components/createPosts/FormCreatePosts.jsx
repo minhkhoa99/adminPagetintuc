@@ -73,8 +73,9 @@ function FormCreatePosts() {
 
   const handleHotNew = (e) => {
     const selectedValue = e.target.value;
-    setCreateNews({ ...createNews, host_new: selectedValue });
-  };
+    setCreateNews({...createNews, host_new: selectedValue})
+  }
+console.log("hot",createNews.host_new);
 
   useEffect(() => {
     if (createNews.title !== "") {
