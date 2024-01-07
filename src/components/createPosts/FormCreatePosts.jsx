@@ -91,7 +91,7 @@ function FormCreatePosts() {
     const selectedValue = e.target.value;
     setCreateNews({...createNews, host_new: selectedValue})
   }
-
+console.log("hot",createNews.host_new);
   useEffect(() => {
     if (createNews.title !== "") {
       createNews.status = "1";
