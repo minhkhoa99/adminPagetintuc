@@ -30,21 +30,19 @@ function FormCreatePosts() {
     hotNews: {
       id: 1,
       label: "Tin Hot",
-      value: "1"
+      value: "1",
     },
     new: {
       id: 0,
       label: "Tin Thường",
-      value: "0"
-    }
-  }
+      value: "0",
+    },
+  };
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
 
   useEffect(() => {
     async function getData() {
@@ -57,20 +55,6 @@ function FormCreatePosts() {
     }
     getData();
   }, []);
-
-  const handleImageUpload = (title, isImage, isVideo) => {
-    if (isImage.includes(title.type)) {
-      setCreateNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        image: title.name,
-      }));
-    } else if (isVideo.includes(title.type)) {
-      setCreateNews((prevCreateNews) => ({
-        ...prevCreateNews,
-        video: title.name,
-      }));
-    }
-  };
 
   const handleEvent = (e) => {
     e.preventDefault();
@@ -89,8 +73,8 @@ function FormCreatePosts() {
 
   const handleHotNew = (e) => {
     const selectedValue = e.target.value;
-    setCreateNews({...createNews, host_new: selectedValue})
-  }
+    setCreateNews({ ...createNews, host_new: selectedValue });
+  };
 
   useEffect(() => {
     if (createNews.title !== "") {
@@ -98,7 +82,6 @@ function FormCreatePosts() {
       setCreateNews({ ...createNews, status: createNews.status });
     }
   }, [values]);
-  console.log(createNews);
 
   const handleChange = async (events) => {
     try {
@@ -152,6 +135,7 @@ function FormCreatePosts() {
   const ondescription = (value) => {
     setCreateNews({ ...createNews, content: value });
   };
+
   return (
     <>
       <Button
@@ -192,11 +176,9 @@ function FormCreatePosts() {
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
-                  
                 ))}
               </TextField>
             </div>
-            
 
             <div className='short-title title-form '>
               <TextField
@@ -208,7 +190,7 @@ function FormCreatePosts() {
                 value={createNews.shortTitle}
                 onChange={handleChange}
               />
-               <TextField
+              <TextField
                 id='filled-select-currency'
                 select
                 label='Loại Tin'
@@ -219,11 +201,11 @@ function FormCreatePosts() {
                 variant='filled'
               >
                 <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
-                    {dataNew.hotNews.label}
-                  </MenuItem>
-                  <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
-                    {dataNew.new.label}
-                  </MenuItem>
+                  {dataNew.hotNews.label}
+                </MenuItem>
+                <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
+                  {dataNew.new.label}
+                </MenuItem>
               </TextField>
             </div>
 
@@ -240,6 +222,7 @@ function FormCreatePosts() {
                 placeholder={"Nhập nội dung bài viết...."}
                 modules={modules("t1")}
                 formats={formats}
+                ima
               />
 
               {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}
