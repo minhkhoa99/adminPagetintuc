@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-// import axios from "axios";
 import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
 import ButtonUploadFile from "./ButtonUploadFile";
 import { message } from "antd";
-import axios from "axios";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -30,6 +30,8 @@ function FormCreatePosts() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [data, setData] = useState('');
 
   useEffect(() => {
     async function getData() {
@@ -125,6 +127,12 @@ function FormCreatePosts() {
     }
   };
 
+  const handleEditor = (event, editor) => {
+    setData(editor.getData())
+
+    console.log(data);
+  }
+
   return (
     <>
       <Button
@@ -191,12 +199,11 @@ function FormCreatePosts() {
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
 
-              <Form.Control
-                as='textarea'
-                rows={10}
-                name='content'
-                value={createNews.content}
-                onChange={handleChange}
+              <CKEditor
+                editor={ClassicEditor}
+                data={createNews.content}
+                onChange={(e, editor) => { handleEditor(e, editor) }}
+
               />
             </Form.Group>
           </Form>
