@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import axios from "axios";
+import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
-
-import ButtonCheck from "./ButtonCheck";
-import ButtonUploadFile from "./ButtonUploadFile";
 import { message } from "antd";
+import ReactQuill from "react-quill";
+import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
+import "react-quill/dist/quill.snow.css";
+import "./TextEditor.css";
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -31,9 +32,11 @@ function FormCreatePosts() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [data, setData] = useState("");
+
   useEffect(() => {
     async function getData() {
-      await axios
+      await axiosInstance
         .get("http://localhost:8000/category")
         .then((fetchData) => {
           setCategory(fetchData.data.data);
@@ -42,6 +45,20 @@ function FormCreatePosts() {
     }
     getData();
   }, []);
+
+  const handleImageUpload = (title, isImage, isVideo) => {
+    if (isImage.includes(title.type)) {
+      setCreateNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        image: title.name,
+      }));
+    } else if (isVideo.includes(title.type)) {
+      setCreateNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        video: title.name,
+      }));
+    }
+  };
 
   const handleEvent = (e) => {
     e.preventDefault();
@@ -53,7 +70,7 @@ function FormCreatePosts() {
 
     if (selectedMenuItem) {
       const { id } = selectedMenuItem;
-
+      console.log("ids: ", id);
       setCreateNews({ ...createNews, CategoryId: id });
     }
 
@@ -80,16 +97,30 @@ function FormCreatePosts() {
   const handleCreateNews = async (events) => {
     try {
       events.preventDefault();
+      if (createNews.content.length < 50) {
+        message.error("Vui lòng nhập tối đa 50 ký tự");
+        return false;
+      }
 
-      await axios.post("http://localhost:8000/new", {
+      if (!createNews.status || !createNews.CategoryId || !createNews.title) {
+        message.error("Tiêu đề hoặc sự kiện không được để trống");
+        return false;
+      }
+
+      const newsCreate = await axiosInstance.post("http://localhost:8000/new", {
         title: createNews.title,
         shortTitle: createNews.shortTitle,
         image: createNews.image,
         video: createNews.video,
         content: createNews.content,
         status: createNews.status,
-        CategoryId: createNews.CategoryId,
+        category_id: createNews.CategoryId,
       });
+
+      if (!newsCreate) {
+        return false;
+      }
+
       message.success("Tạo mới bài viết thành công");
 
       handleClose();
@@ -98,6 +129,10 @@ function FormCreatePosts() {
       message.error("Tạo mới bài viết thất bại");
       throw error;
     }
+  };
+
+  const ondescription = (value) => {
+    setCreateNews({ ...createNews, content: value });
   };
   return (
     <>
@@ -127,7 +162,7 @@ function FormCreatePosts() {
               />
 
               <TextField
-                id='filled-select-currency menu-items'
+                id='filled-select-currency'
                 select
                 label='Sự kiện'
                 defaultValue='Chọn sự kiện'
@@ -146,32 +181,31 @@ function FormCreatePosts() {
             <div className='short-title'>
               <TextField
                 id='outlined-multiline-flexible'
-                name='shortTitle'
-                value={createNews.shortTitle}
-                onChange={handleChange}
                 label='Nhập tiêu đề ngắn'
                 multiline
                 maxRows={4}
+                name='shortTitle'
+                value={createNews.shortTitle}
+                onChange={handleChange}
               />
-            </div>
-
-            <div className='uploadfile-btn'>
-              <ButtonUploadFile />
             </div>
 
             <Form.Group
-              className='mb-3'
+              className='mb-3 form-text-data'
               controlId='exampleForm.ControlTextarea1'
             >
               <Form.Label>Nội dung sự kiện</Form.Label>
-              <ButtonCheck />
-              <Form.Control
-                as='textarea'
-                rows={10}
-                name='content'
+              <EditorToolbar toolbarId={"t1"} />
+              <ReactQuill
+                theme='snow'
                 value={createNews.content}
-                onChange={handleChange}
+                onChange={ondescription}
+                placeholder={"Nhập nội dung bài viết...."}
+                modules={modules("t1")}
+                formats={formats}
               />
+
+              {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}
             </Form.Group>
           </Form>
         </Modal.Body>

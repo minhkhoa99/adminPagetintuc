@@ -48,7 +48,7 @@ export default function HomePages({ getDataPages }) {
               .map((row) => (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
                   <TableCell align='left'>{row.title}</TableCell>
-                  <TableCell align='right'>{row.shortTitle}</TableCell>
+                  <TableCell align='right'>{row.short_title}</TableCell>
                   <TableCell align='right'>{row.content}</TableCell>
                   <TableCell align='right'>{row.category_name}</TableCell>
                   <TableCell align='right'>
@@ -60,7 +60,7 @@ export default function HomePages({ getDataPages }) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100, 1000, 5000]}
         component='div'
         count={getDataPages.length}
         rowsPerPage={rowsPerPage}

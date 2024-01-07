@@ -4,6 +4,7 @@ import PostPage from "./pages/createPostPage/PostPage";
 import AdminHomePages from "./pages/eventAdmin/AdminHomePages";
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
+
 import Navbar from "./components/navbar/Navbar";
 import UpdatePage from "./pages/updatePostPage/UpdatePages";
 import Login from "./pages/login/Login";

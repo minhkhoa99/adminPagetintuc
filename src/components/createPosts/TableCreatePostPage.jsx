@@ -11,6 +11,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import moment from "moment";
+import { message } from "antd";
 
 export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
@@ -49,6 +50,8 @@ export default function TableCreatePostPage() {
       // Cập nhật state hoặc gọi lại hàm lấy dữ liệu mới (nếu cần)
       const updatedData = getData.filter((post) => post.id !== postId);
       setGetData(updatedData);
+
+      message.success("Xóa bài viết thành công");
     } catch (error) {
       console.log(error);
       // Xử lý lỗi xóa bài viết nếu cần
@@ -66,9 +69,6 @@ export default function TableCreatePostPage() {
                 Tiêu đề ngắn
               </TableCell>
               <TableCell align='right' style={{ minWidth: 170 }}>
-                Nội dung bài viết
-              </TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
                 Sự kiện
               </TableCell>
               <TableCell align='right' style={{ minWidth: 170 }}>
@@ -84,11 +84,45 @@ export default function TableCreatePostPage() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                  <TableCell align='left'>{row.title}</TableCell>
-                  <TableCell align='right'>{row.shortTitle}</TableCell>
-                  <TableCell align='right'>{row.content}</TableCell>
-                  <TableCell align='right'>{row.category_name}</TableCell>
-                  <TableCell align='right'>
+                  <TableCell
+                    align='left'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxHeight: "40px",
+                    }}
+                  >
+                    {row.title}
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxHeight: "40px",
+                    }}
+                  >
+                    {row.short_title}
+                  </TableCell>
+
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxHeight: "40px",
+                    }}
+                  >
+                    {row.category_name}
+                  </TableCell>
+                  <TableCell
+                    align='right'
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxHeight: "40px",
+                    }}
+                  >
                     {moment(row.createdAt).format("DD-MM-YYYY")}
                   </TableCell>
                   <TableCell align='right'>
@@ -107,7 +141,7 @@ export default function TableCreatePostPage() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 100, 1000, 5000]}
         component='div'
         count={getData.length}
         rowsPerPage={rowsPerPage}
