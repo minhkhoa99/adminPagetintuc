@@ -29,12 +29,12 @@ function FormCreatePosts() {
   const dataNew = {
     hotNews: {
       id: 1,
-      label: "Host New",
+      label: "Tin Hot",
       value: "1"
     },
     new: {
       id: 0,
-      label: "New",
+      label: "Tin Thường",
       value: "0"
     }
   }
@@ -44,7 +44,6 @@ function FormCreatePosts() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [hostNew, setHotNew] = useState("")
 
 
   useEffect(() => {
