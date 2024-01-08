@@ -6,7 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert"
 const { Column } = Table;
 
-const TableImage = () => {
+const ImageTable = () => {
     const navigate = useNavigate();
     const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false)
 
@@ -22,7 +22,7 @@ const TableImage = () => {
   const [image, setImage] = useState([]);
   useEffect(() => {
      axios
-      .get("http://localhost:8000/link/")
+      .get("http://localhost:8000/upload-image/")
       .then((data) => setImage(data.data.data))
       .catch((err) => console.log(err));
   }, []);
@@ -37,7 +37,7 @@ const TableImage = () => {
 
 
   const handleDelete = (record) => {
-    axios.delete(`http://localhost:8000/link/${record.id}`)
+    axios.delete(`http://localhost:8000/upload-image/${record.id}`)
     .then((data) => {
         Swal({
             position: 'top-end',
@@ -59,18 +59,15 @@ const TableImage = () => {
     return e?.fileList;
   };
 
-  const handleClickEdit = (record) => {
-    navigate(`/admin/image/${record.id}`)
-  }
-
 
   const onFinish = (values) => {
    const formData = new FormData();
-    formData.append("link", values.user.website);
-    formData.append("file", values.upload[0].originFileObj);
-    axios.post("http://localhost:8000/link", formData)
+   const file = values.upload[0]?.originFileObj;
+    formData.append("file", file);
+    axios.post("http://localhost:8000/upload-image/image-new/",formData)
     .then((data) => {
     if(data.data){
+        console.log(data.data);
         Swal({
             position: 'top-end',
             icon: 'success',
@@ -79,6 +76,7 @@ const TableImage = () => {
             timer: 1500
           })
           setIsModalOpen(false)
+          window.location.reload()
     }
     })
     .catch((err) => console.log(err))
@@ -100,7 +98,7 @@ const TableImage = () => {
               CREATE
             </Button>
         <Table dataSource={image}>
-      <Column title="Image" dataIndex="image" key="image" />
+      <Column title="Title" dataIndex="title" key="title" />
       <Column title="Link" dataIndex="link" key="link" />
 
       <Column
@@ -108,15 +106,6 @@ const TableImage = () => {
         key="action"
         render={(_, record) => (
           <Space size="middle">
-            
-            <Button
-              type="primary"
-              onClick={() => {
-                handleClickEdit(record);
-              }}
-            >
-              EDIT
-            </Button>
             <Button
               type="primary"
               danger
@@ -139,9 +128,6 @@ const TableImage = () => {
       maxWidth: 600,
     }}
   >
-    <Form.Item name={['user', 'website']} label="Website">
-      <Input />
-    </Form.Item>
     <Form.Item
       name="upload"
       label="Upload"
@@ -171,4 +157,4 @@ const TableImage = () => {
    
   );
 };
-export default TableImage;
+export default ImageTable;
