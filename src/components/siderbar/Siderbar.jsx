@@ -97,6 +97,14 @@ const Siderbar = () => {
                   </li>
                 </ul>
               </li>
+              <li className="sidebar-item">
+              <a
+                  href="/admin/image/"
+                  className="sidebar-link collapsed"
+                >
+                  List Image
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

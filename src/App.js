@@ -13,6 +13,8 @@ import Register from "./pages/register/Register";
 import TableUser from "./pages/table-user/TableUser";
 import Cookies from 'js-cookie';
 import UpdateUser from "./pages/updateUser/UpdateUser";
+import TableImage from "./pages/table-image-link/Table";
+import UpdateImage from "./pages/table-image-link/tableUpdate";
 
 const App = () => {
     const token = Cookies.get('Authorization');
@@ -32,6 +34,10 @@ const App = () => {
                 <Route path="/admin/register" element={<Register />} />
                 <Route path="/admin/user" element={<TableUser />} />
                 <Route path="/admin/user/:id" element={<UpdateUser />} />
+                <Route path="/admin/image/" element={<TableImage />} />
+                <Route path="/admin/image/:id" element={<UpdateImage />} />
+
+
               </Routes>
             </div>
           </div>
