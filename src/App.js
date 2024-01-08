@@ -2,7 +2,7 @@ import "./App.css";
 import Siderbar from "./components/siderbar/Siderbar";
 import PostPage from "./pages/createPostPage/PostPage";
 import AdminHomePages from "./pages/eventAdmin/AdminHomePages";
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes,  } from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/navbar/Navbar";
@@ -15,10 +15,10 @@ import Cookies from 'js-cookie';
 import UpdateUser from "./pages/updateUser/UpdateUser";
 import TableImage from "./pages/table-image-link/Table";
 import UpdateImage from "./pages/table-image-link/tableUpdate";
+import ImageTable from "./pages/image-slider/Image-table";
 
 const App = () => {
     const token = Cookies.get('Authorization');
-
 
     return (
       <Router>
@@ -36,14 +36,14 @@ const App = () => {
                 <Route path="/admin/user/:id" element={<UpdateUser />} />
                 <Route path="/admin/image/" element={<TableImage />} />
                 <Route path="/admin/image/:id" element={<UpdateImage />} />
-
+                <Route path="/admin/image-slider/" element={<ImageTable />} />
 
               </Routes>
             </div>
           </div>
         ) : (
           <Routes>
-            <Route path="/admin/*" element={<Login />} />
+            <Route path="/admin/" element={<Login />} />
           </Routes>
         )}
       </Router>
