@@ -9,9 +9,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import axios from "axios";
 import moment from "moment";
 import { message } from "antd";
+import { axiosInstance } from "../../js/auth.config";
 
 export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
@@ -27,7 +27,7 @@ export default function TableCreatePostPage() {
   };
 
   const getAllData = async () => {
-    await axios
+    await axiosInstance
       .get("http://localhost:8000/new")
       .then((response) => {
         setGetData(response.data.data);
@@ -45,7 +45,7 @@ export default function TableCreatePostPage() {
   const handleDelete = async (postId) => {
     try {
       // Gửi yêu cầu xóa bài viết đến server
-      await axios.delete(`http://localhost:8000/new/${postId}`);
+      await axiosInstance.delete(`http://localhost:8000/new/${postId}`);
 
       // Cập nhật state hoặc gọi lại hàm lấy dữ liệu mới (nếu cần)
       const updatedData = getData.filter((post) => post.id !== postId);

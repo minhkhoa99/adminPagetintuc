@@ -26,18 +26,18 @@ function FormCreatePosts() {
     status: "0",
     CategoryId: "",
   });
-  const dataNew = {
-    hotNews: {
-      id: 1,
-      label: "Tin Hot",
-      value: "1",
-    },
-    new: {
+  const dataNew = [
+    {
       id: 0,
       label: "Tin Thường",
       value: "0",
     },
-  };
+    {
+      id: 1,
+      label: "Tin Hot",
+      value: "1",
+    },
+  ];
 
   const [show, setShow] = useState(false);
 
@@ -73,9 +73,15 @@ function FormCreatePosts() {
 
   const handleHotNew = (e) => {
     const selectedValue = e.target.value;
-    setCreateNews({...createNews, host_new: selectedValue})
-  }
-console.log("hot",createNews.host_new);
+    const selectedMenuItem = dataNew.find(
+      (option) => option.id === selectedValue
+    );
+
+    if (selectedMenuItem) {
+      const { id } = selectedMenuItem;
+      setCreateNews({ ...createNews, host_new: JSON.stringify(id) });
+    }
+  };
 
   useEffect(() => {
     if (createNews.title !== "") {
@@ -98,13 +104,14 @@ console.log("hot",createNews.host_new);
   const handleCreateNews = async (events) => {
     try {
       events.preventDefault();
-      if (createNews.content.length < 50) {
-        message.error("Vui lòng nhập tối đa 50 ký tự");
-        return false;
-      }
 
       if (!createNews.status || !createNews.CategoryId || !createNews.title) {
         message.error("Tiêu đề hoặc sự kiện không được để trống");
+        return false;
+      }
+
+      if (createNews.content.length < 50) {
+        message.error("Vui lòng nhập tối đa 50 ký tự");
         return false;
       }
 
@@ -201,12 +208,13 @@ console.log("hot",createNews.host_new);
                 onChange={handleHotNew}
                 variant='filled'
               >
-                <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
-                  {dataNew.hotNews.label}
-                </MenuItem>
-                <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
-                  {dataNew.new.label}
-                </MenuItem>
+                {dataNew.map((option) => {
+                  return (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.label}
+                    </MenuItem>
+                  );
+                })}
               </TextField>
             </div>
 
@@ -223,7 +231,6 @@ console.log("hot",createNews.host_new);
                 placeholder={"Nhập nội dung bài viết...."}
                 modules={modules("t1")}
                 formats={formats}
-                ima
               />
 
               {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}

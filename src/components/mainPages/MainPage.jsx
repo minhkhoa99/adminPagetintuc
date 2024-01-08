@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import HomePages from "./HomePages";
 import Search from "./Search";
 import "./css/mainpage.css";
-import axios from "axios";
+import { axiosInstance } from "../../js/auth.config";
 const MainPages = () => {
   const [getData, setGetData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const getAllData = async () => {
-    await axios
+    await axiosInstance
       .get("http://localhost:8000/new")
       .then((response) => {
         setGetData(response.data.data);
