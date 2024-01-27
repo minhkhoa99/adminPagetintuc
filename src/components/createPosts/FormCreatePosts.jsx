@@ -24,7 +24,7 @@ function FormCreatePosts() {
     video: "",
     content: "",
     status: "0",
-    CategoryId: "",
+    CategoryId: 0,
   });
   const dataNew = {
     hotNews: {
@@ -75,7 +75,6 @@ function FormCreatePosts() {
     const selectedValue = e.target.value;
     setCreateNews({...createNews, host_new: selectedValue})
   }
-console.log("hot",createNews.host_new);
 
   useEffect(() => {
     if (createNews.title !== "") {
@@ -107,6 +106,8 @@ console.log("hot",createNews.host_new);
         message.error("Tiêu đề hoặc sự kiện không được để trống");
         return false;
       }
+
+      console.log(createNews);
 
       const newsCreate = await axiosInstance.post("http://localhost:8000/new", {
         title: createNews.title,
