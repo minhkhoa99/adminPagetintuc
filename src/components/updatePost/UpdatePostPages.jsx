@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import SearchUpdatePages from "./SearchUpdatePages";
 import "./updatePages.css";
 import TableUpdatePages from "./TableUpdatePages";
-import axios from "axios";
+import { axiosInstance } from "../../js/auth.config";
 
 const UpdatePostPages = () => {
   const [getData, setGetData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
   const getAllData = async () => {
-    await axios
+    await axiosInstance
       .get("http://localhost:8000/new")
       .then((response) => {
         setGetData(response.data.data);
@@ -23,7 +23,6 @@ const UpdatePostPages = () => {
 
   useEffect(() => {
     getAllData();
-    console.log(getData);
   }, []);
   const handleSearch = (searchTerm) => {
     // Filter data based on the search term

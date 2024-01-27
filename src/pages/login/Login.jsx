@@ -1,25 +1,13 @@
-import React, { useEffect } from "react";
-import { Form, Input, Button, Checkbox, Card } from "antd";
+import React from "react";
+import { Form, Input, Button, Checkbox, Card, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Typography } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const Login = () => {
-  const token = Cookies.get("Authorization");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      navigate("/admin/home-page", { replace: true });
-    } else {
-      navigate("/admin/", { replace: true });
-    }
-  }, [navigate, token]);
-
   const onFinish = (values) => {
     console.log(values);
     axios
@@ -66,40 +54,40 @@ const Login = () => {
           <Title level={2}>LOGIN ADMIN</Title>
         </div>
         <Form
-          name="normal_login"
-          className="login-form"
+          name='normal_login'
+          className='login-form'
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
+            name='username'
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              prefix={<UserOutlined className='site-form-item-icon' />}
+              placeholder='Username'
             />
           </Form.Item>
           <Form.Item
-            name="password"
+            name='password'
             rules={[{ required: true, message: "Please input your Password!" }]}
           >
             <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
+              prefix={<LockOutlined className='site-form-item-icon' />}
+              type='password'
+              placeholder='Password'
             />
           </Form.Item>
           <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
+            <Form.Item name='remember' valuePropName='checked' noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
           </Form.Item>
           <Form.Item>
             <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
+              type='primary'
+              htmlType='submit'
+              className='login-form-button'
               block
             >
               Log in

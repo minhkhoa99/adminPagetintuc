@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import ButtonUploadFile from "./ButtonUploadFile";
 import { axiosInstance } from "../../js/auth.config";
 
 import { message } from "antd";
@@ -28,18 +27,18 @@ function FormUpdatePosts(props) {
     status: "",
     CategoryId: "",
   });
-  const dataNew = {
-    hotNews: {
+  const dataNew = [
+    {
       id: 1,
       label: "Tin Hot",
-      value: "1"
+      value: "1",
     },
-    new: {
+    {
       id: 0,
       label: "Tin Thường",
-      value: "0"
-    }
-  }
+      value: "0",
+    },
+  ];
   const [getIdNews, setGetIdNews] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -85,8 +84,15 @@ function FormUpdatePosts(props) {
   };
   const handleHotNew = (e) => {
     const selectedValue = e.target.value;
-    setEditNews({...editNews, host_new: selectedValue})
-  }
+    const selectedMenuItem = dataNew.find(
+      (option) => option.id === selectedValue
+    );
+
+    if (selectedMenuItem) {
+      const { id } = selectedMenuItem;
+      setEditNews({ ...editNews, host_new: JSON.stringify(id) });
+    }
+  };
   useEffect(() => {
     if (editNews.title !== "") {
       editNews.status = "1";
@@ -105,14 +111,9 @@ function FormUpdatePosts(props) {
     }
   };
 
-  const handleeditNews = async (events) => {
+  const handleEditNews = async (events) => {
     try {
       events.preventDefault();
-
-      if (editNews.content.length < 50) {
-        message.error("Vui lòng nhập tối đa 50 ký tự");
-        return false;
-      }
 
       if (!getIdNews) {
         message.error("Không tìm thấy id bài viết");
@@ -122,6 +123,11 @@ function FormUpdatePosts(props) {
       if (!editNews.status || !editNews.CategoryId || !editNews.title) {
         console.log(editNews.CategoryId);
         message.error("Tiêu đề hoặc sự kiện không được để trống");
+        return false;
+      }
+
+      if (editNews.content.length < 50) {
+        message.error("Vui lòng nhập tối đa 50 ký tự");
         return false;
       }
 
@@ -209,7 +215,7 @@ function FormUpdatePosts(props) {
                 value={editNews.shortTitle}
                 onChange={handleChange}
               />
-               <TextField
+              <TextField
                 id='filled-select-currency'
                 select
                 label='Loại Tin'
@@ -219,25 +225,14 @@ function FormUpdatePosts(props) {
                 onChange={handleHotNew}
                 variant='filled'
               >
-                <MenuItem key={dataNew.hotNews.id} value={dataNew.hotNews.id}>
-                    {dataNew.hotNews.label}
-                  </MenuItem>
-                  <MenuItem key={dataNew.new.id} value={dataNew.new.id}>
-                    {dataNew.new.label}
-                  </MenuItem>
+                {dataNew.map((option) => {
+                  return (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.label}
+                    </MenuItem>
+                  );
+                })}
               </TextField>
-            </div>
-
-            <div className='short-title'>
-              <TextField
-                id='outlined-multiline-flexible'
-                name='shortTitle'
-                value={editNews.shortTitle}
-                onChange={handleChange}
-                label='Nhập tiêu đề ngắn'
-                multiline
-                maxRows={4}
-              />
             </div>
 
             <Form.Group
@@ -261,7 +256,7 @@ function FormUpdatePosts(props) {
           <Button variant='secondary' onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant='primary' onClick={handleeditNews}>
+          <Button variant='primary' onClick={handleEditNews}>
             Cập nhật
           </Button>
         </Modal.Footer>
