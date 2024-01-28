@@ -13,17 +13,17 @@ import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import UpdatePage from "./pages/updatePostPage/UpdatePages";
 import Login from "./pages/login/Login";
-import React from "react";
+import React, { useEffect } from "react";
 import Register from "./pages/register/Register";
 import TableUser from "./pages/table-user/TableUser";
 import Cookies from "js-cookie";
 import UpdateUser from "./pages/updateUser/UpdateUser";
 import TableImage from "./pages/table-image-link/Table";
 import UpdateImage from "./pages/table-image-link/tableUpdate";
-import ImageTable from "./pages/image-slider/Image-table";
 
 const App = () => {
   const token = Cookies.get("Authorization");
+
 
   return (
     <Router>
