@@ -9,7 +9,7 @@ const TableUser = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axiosInstance
-      .get("http://localhost:8000/user/")
+      .get(`${process.env.REACT_APP_API_URL_APP}/user/`)
       .then((data) => setUser(data.data.data))
       .catch((err) => console.log(err));
   }, [user]);
@@ -21,7 +21,7 @@ const TableUser = () => {
 
   const handleDelete = (record) => {
     axiosInstance
-      .delete(`http://localhost:8000/user/${record.id}`)
+      .delete(`${process.env.REACT_APP_API_URL_APP}/user/${record.id}`)
       .then((data) => console.log(data.data))
       .catch((err) => console.log(err));
   };

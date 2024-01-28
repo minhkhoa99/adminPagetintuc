@@ -11,6 +11,7 @@ import ReactQuill from "react-quill";
 import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
+import ButtonUploadFile from "./ButtonUploadFile";
 
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
@@ -21,8 +22,7 @@ function FormUpdatePosts(props) {
     title: "",
     shortTitle: "",
     host_new: "",
-    image: "",
-    video: "",
+    avatar: "",
     content: "",
     status: "",
     CategoryId: "",
@@ -46,7 +46,7 @@ function FormUpdatePosts(props) {
   useEffect(() => {
     async function getData() {
       await axiosInstance
-        .get("http://localhost:8000/category")
+        .get(`${process.env.REACT_APP_API_URL_APP}/category`)
         .then((fetchData) => {
           setCategory(fetchData.data.data);
         })
@@ -56,7 +56,7 @@ function FormUpdatePosts(props) {
 
     async function getById() {
       await axiosInstance
-        .get(`http://localhost:8000/new/${props.postId}`)
+        .get(`${process.env.REACT_APP_API_URL_APP}/new/${props.postId}`)
         .then((fetchData) => {
           setGetIdNews(fetchData.data.data.id);
         })
@@ -121,7 +121,6 @@ function FormUpdatePosts(props) {
       }
 
       if (!editNews.status || !editNews.CategoryId || !editNews.title) {
-        console.log(editNews.CategoryId);
         message.error("Tiêu đề hoặc sự kiện không được để trống");
         return false;
       }
@@ -132,12 +131,11 @@ function FormUpdatePosts(props) {
       }
 
       const updateNews = await axiosInstance.put(
-        `http://localhost:8000/new/${getIdNews}`,
+        `${process.env.REACT_APP_API_URL_APP}/new/${getIdNews}`,
         {
           title: editNews.title,
           shortTitle: editNews.shortTitle,
-          image: editNews.image,
-          video: editNews.video,
+          avatar: editNews.avatar,
           host_new: editNews.host_new,
           content: editNews.content,
           status: editNews.status,
@@ -155,6 +153,22 @@ function FormUpdatePosts(props) {
       console.log(error);
       message.error("Cập nhật bài viết thất bại");
       throw error;
+    }
+  };
+
+  const normalizeString = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+  };
+
+  const handleImageUpload = (title, isImage) => {
+    if (isImage.includes(title.type)) {
+      setEditNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        avatar: title.name,
+      }));
     }
   };
 
@@ -235,6 +249,9 @@ function FormUpdatePosts(props) {
               </TextField>
             </div>
 
+            <div className='uploadfile-btn'>
+              <ButtonUploadFile onFileUpload={handleImageUpload} />
+            </div>
             <Form.Group
               className='mb-3'
               controlId='exampleForm.ControlTextarea1'

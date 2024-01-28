@@ -8,7 +8,7 @@ const { Title } = Typography;
 const Register = () => {
   const onFinish = (values) => {
     axios
-      .post("http://localhost:8000/user", {
+      .post(`${process.env.REACT_APP_API_URL_APP}/user`, {
         username: values.username,
         password: values.password,
       })
