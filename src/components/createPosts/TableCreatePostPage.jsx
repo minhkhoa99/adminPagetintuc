@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useRef, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,6 +17,7 @@ export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [getData, setGetData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -27,25 +28,31 @@ export default function TableCreatePostPage() {
   };
 
   const getAllData = async () => {
-    await axiosInstance
-      .get("http://localhost:8000/new")
-      .then((response) => {
-        setGetData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        throw error;
-      });
+    setIsFetching(true);
+    try {
+      const response = await axiosInstance.get(
+        `${process.env.REACT_APP_API_URL_APP}/new`
+      );
+
+      setGetData(response.data.data);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   useEffect(() => {
-    getAllData();
+    if (!isFetching) {
+      getAllData();
+    }
   }, []);
 
   const handleDelete = async (postId) => {
     try {
       // Gửi yêu cầu xóa bài viết đến server
-      await axiosInstance.delete(`http://localhost:8000/new/${postId}`);
+      await axiosInstance.delete(
+        `${process.env.REACT_APP_API_URL_APP}/new/${postId}`
+      );
 
       // Cập nhật state hoặc gọi lại hàm lấy dữ liệu mới (nếu cần)
       const updatedData = getData.filter((post) => post.id !== postId);
@@ -54,6 +61,8 @@ export default function TableCreatePostPage() {
       message.success("Xóa bài viết thành công");
     } catch (error) {
       console.log(error);
+
+      return message.error("Xóa bài viết thất bại");
       // Xử lý lỗi xóa bài viết nếu cần
     }
   };

@@ -9,9 +9,8 @@ const { Title } = Typography;
 
 const Login = () => {
   const onFinish = (values) => {
-    console.log(values);
     axios
-      .post("http://localhost:8000/auth/login", {
+      .post(`${process.env.REACT_APP_API_URL_APP}/auth/login`, {
         username: values.username,
         password: values.password,
       })
