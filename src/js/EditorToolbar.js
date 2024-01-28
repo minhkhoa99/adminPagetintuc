@@ -1,6 +1,7 @@
 import React from "react";
 import { Quill } from "react-quill";
 import { axiosInstance } from "./auth.config";
+import { message } from "antd";
 
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
@@ -14,6 +15,25 @@ const CustomUndo = () => (
     />
   </svg>
 );
+
+//getImageURL
+
+export const uploadImageToServer = async (file) =>{
+  const formData = new FormData();
+  formData.append("file", file); // Tên 'image' phải khớp với tên bạn sử dụng trong upload.single('image').
+
+  try {
+    let uploadEndpoint = `${process.env.REACT_APP_API_URL_APP}/upload-image`; // Endpoint mặc định cho ảnh
+
+    const response = await axiosInstance.post(uploadEndpoint, formData);
+
+    return response.data.data.link;
+  } catch (error) {
+    console.error(error);
+    message.error("Lỗi tải lên hình ảnh")
+    return false
+  }
+}
 
 // Redo button icon component for Quill editor
 const CustomRedo = () => (
@@ -93,6 +113,7 @@ export const formats = [
 
 // Quill Toolbar component
 export const QuillToolbar = (props) => {
+
   return (
     <>
       {props.toolbarId !== undefined && (

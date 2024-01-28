@@ -156,18 +156,11 @@ function FormUpdatePosts(props) {
     }
   };
 
-  const normalizeString = (str) => {
-    return str
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-  };
-
   const handleImageUpload = (title, isImage) => {
     if (isImage.includes(title.type)) {
       setEditNews((prevCreateNews) => ({
         ...prevCreateNews,
-        avatar: title.name,
+        avatar: title.link,
       }));
     }
   };

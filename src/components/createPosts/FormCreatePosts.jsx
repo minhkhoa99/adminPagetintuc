@@ -1,5 +1,5 @@
 import { TextField, MenuItem } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -7,15 +7,17 @@ import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
 import { message } from "antd";
 import ReactQuill from "react-quill";
-import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
+import EditorToolbar, { modules, formats, imageHandler, uploadImageToServer } from "../../js/EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
 
-function FormCreatePosts() {
+ function FormCreatePosts() {
   const [values, setvalue] = useState("");
 
   const [category, setCategory] = useState([]);
+
+  const reactQuillRef = useRef()
 
   const [createNews, setCreateNews] = useState({
     title: "",
@@ -155,6 +157,30 @@ function FormCreatePosts() {
     setCreateNews({ ...createNews, content: value });
   };
 
+
+   const imageHandler = useCallback(()=>{
+  
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      
+      if (input !== null && input.files !== null) {
+        const file = input.files[0];
+        const getUrl = await uploadImageToServer(file)
+       
+        const quill = await reactQuillRef.current;
+        console.log("quil",quill);
+       
+        if (quill) {
+          const range = quill.getEditorSelection();
+          range && quill.getEditor().insertEmbed(range.index, "image", getUrl);
+        }
+      }
+    };
+  },[])
+
   return (
     <>
       <Button
@@ -232,6 +258,7 @@ function FormCreatePosts() {
             <div className='uploadfile-btn'>
               <ButtonUploadFileCreate onFileUpload={handleImageUpload} />
             </div>
+            
             <Form.Group
               className='mb-3 form-text-data'
               controlId='exampleForm.ControlTextarea1'
@@ -239,15 +266,22 @@ function FormCreatePosts() {
               <Form.Label>Nội dung sự kiện</Form.Label>
               <EditorToolbar toolbarId={"t1"} />
               <ReactQuill
+                ref={reactQuillRef}
                 theme='snow'
                 value={createNews.content}
                 onChange={ondescription}
                 placeholder={"Nhập nội dung bài viết...."}
-                modules={modules("t1")}
+                modules={{
+                  ...modules("t1"), 
+                  
+                }}
+                handlers={{
+                  image: imageHandler,
+                  ...modules("t1").toolbar.handlers, 
+                }}
                 formats={formats}
               />
 
-              {/* <ButtonUploadFile onFileUpload={handleImageUpload} /> */}
             </Form.Group>
           </Form>
         </Modal.Body>

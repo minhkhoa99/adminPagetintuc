@@ -1,7 +1,6 @@
 import { Button, Upload, message } from "antd";
 import { axiosInstance } from "../../js/auth.config";
 import { UploadOutlined } from "@mui/icons-material";
-import unidecode from "unidecode";
 
 const ButtonUploadFileCreate = ({ onFileUpload }) => {
   const allowedImageFormats = [
