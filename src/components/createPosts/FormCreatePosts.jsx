@@ -146,7 +146,7 @@ function FormCreatePosts() {
     if (isImage.includes(title.type)) {
       setCreateNews((prevCreateNews) => ({
         ...prevCreateNews,
-        avatar: title.name,
+        avatar: title.link,
       }));
     }
   };

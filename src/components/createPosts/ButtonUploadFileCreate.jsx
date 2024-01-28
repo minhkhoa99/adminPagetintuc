@@ -10,6 +10,7 @@ const ButtonUploadFileCreate = ({ onFileUpload }) => {
     "image/png",
     "image/gif",
   ];
+  let obj = {};
 
   const handleChange = async (info) => {
     if (info.file.status === "done") {
@@ -21,7 +22,7 @@ const ButtonUploadFileCreate = ({ onFileUpload }) => {
       message.error(`${info.file.name} file upload failed.`);
     }
 
-    onFileUpload(info.file, allowedImageFormats);
+    obj.type = info.file.type;
   };
 
   const handleImage = async (options) => {
@@ -41,6 +42,10 @@ const ButtonUploadFileCreate = ({ onFileUpload }) => {
           onProgress({ percent: percentCompleted });
         },
       });
+
+      obj.link = response.data.data.link;
+
+      onFileUpload(obj, allowedImageFormats);
 
       onSuccess(response.data, file);
     } catch (error) {
