@@ -11,7 +11,7 @@ const UpdateUser = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
     axiosInstance
-      .put(`http://localhost:8000/user/${id}`, {
+      .put(`${process.env.REACT_APP_API_URL_APP}/user/${id}`, {
         username: values.username,
         password: values.password,
       })

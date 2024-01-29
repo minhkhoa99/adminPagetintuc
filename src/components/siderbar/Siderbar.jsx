@@ -59,7 +59,7 @@ const Siderbar = () => {
           </li>
           <li className='sidebar-item'>
             <a
-              href='http://localhost:3001/admin/image-slider/'
+              href='/admin/slide/'
               className='sidebar-link collapsed'
             >
               Hình ảnh tiêu biểu

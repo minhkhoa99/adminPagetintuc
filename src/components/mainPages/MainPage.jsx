@@ -8,7 +8,7 @@ const MainPages = () => {
   const [filteredData, setFilteredData] = useState([]);
   const getAllData = async () => {
     await axiosInstance
-      .get("http://localhost:8000/new")
+      .get(`${process.env.REACT_APP_API_URL_APP}/new`)
       .then((response) => {
         setGetData(response.data.data);
         setFilteredData(response.data.data);

@@ -10,6 +10,7 @@ import ReactQuill from "react-quill";
 import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
+import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
 
 function FormCreatePosts() {
   const [values, setvalue] = useState("");
@@ -20,8 +21,7 @@ function FormCreatePosts() {
     title: "",
     shortTitle: "",
     host_new: "",
-    image: "",
-    video: "",
+    avatar: "",
     content: "",
     status: "0",
     CategoryId: 0,
@@ -47,7 +47,7 @@ function FormCreatePosts() {
   useEffect(() => {
     async function getData() {
       await axiosInstance
-        .get("http://localhost:8000/category")
+        .get(`${process.env.REACT_APP_API_URL_APP}/category`)
         .then((fetchData) => {
           setCategory(fetchData.data.data);
         })
@@ -115,19 +115,21 @@ function FormCreatePosts() {
         return false;
       }
 
-      const newsCreate = await axiosInstance.post("http://localhost:8000/new", {
-        title: createNews.title,
-        shortTitle: createNews.shortTitle,
-        image: createNews.image,
-        video: createNews.video,
-        host_new: createNews.host_new,
-        content: createNews.content,
-        status: createNews.status,
-        category_id: createNews.CategoryId,
-      });
+      const newsCreate = await axiosInstance.post(
+        `${process.env.REACT_APP_API_URL_APP}/new`,
+        {
+          title: createNews.title,
+          shortTitle: createNews.shortTitle,
+          avatar: createNews.avatar,
+          host_new: createNews.host_new,
+          content: createNews.content,
+          status: createNews.status,
+          category_id: createNews.CategoryId,
+        }
+      );
 
       if (!newsCreate) {
-        return false;
+        message.success("Không thể tạo bài viết");
       }
 
       message.success("Tạo mới bài viết thành công");
@@ -137,6 +139,15 @@ function FormCreatePosts() {
       console.log(error);
       message.error("Tạo mới bài viết thất bại");
       throw error;
+    }
+  };
+
+  const handleImageUpload = (title, isImage) => {
+    if (isImage.includes(title.type)) {
+      setCreateNews((prevCreateNews) => ({
+        ...prevCreateNews,
+        avatar: title.name,
+      }));
     }
   };
 
@@ -218,6 +229,9 @@ function FormCreatePosts() {
               </TextField>
             </div>
 
+            <div className='uploadfile-btn'>
+              <ButtonUploadFileCreate onFileUpload={handleImageUpload} />
+            </div>
             <Form.Group
               className='mb-3 form-text-data'
               controlId='exampleForm.ControlTextarea1'

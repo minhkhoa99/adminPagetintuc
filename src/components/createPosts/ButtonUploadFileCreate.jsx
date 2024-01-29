@@ -1,19 +1,13 @@
-import React from "react";
-import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload, message } from "antd";
 import { axiosInstance } from "../../js/auth.config";
-const ButtonUploadFile = ({ onFileUpload }) => {
+import { UploadOutlined } from "@mui/icons-material";
+
+const ButtonUploadFileCreate = ({ onFileUpload }) => {
   const allowedImageFormats = [
     "image/jpeg",
     "image/jpg",
     "image/png",
     "image/gif",
-  ];
-  const allowedVideoFormats = [
-    "video/mp4",
-    "video/avi",
-    "video/mkv",
-    "video/mov",
   ];
 
   const handleChange = async (info) => {
@@ -21,13 +15,12 @@ const ButtonUploadFile = ({ onFileUpload }) => {
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (
       info.file.status === "error" ||
-      (!allowedImageFormats.includes(info.file.type) &&
-        !allowedVideoFormats.includes(info.file.type))
+      !allowedImageFormats.includes(info.file.type)
     ) {
       message.error(`${info.file.name} file upload failed.`);
     }
 
-    onFileUpload(info.file, allowedImageFormats, allowedVideoFormats);
+    onFileUpload(info.file, allowedImageFormats);
   };
 
   const handleImage = async (options) => {
@@ -68,4 +61,4 @@ const ButtonUploadFile = ({ onFileUpload }) => {
     </Upload>
   );
 };
-export default ButtonUploadFile;
+export default ButtonUploadFileCreate;
