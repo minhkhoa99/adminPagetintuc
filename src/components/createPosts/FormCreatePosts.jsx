@@ -24,7 +24,7 @@ function FormCreatePosts() {
     avatar: "",
     content: "",
     status: "0",
-    CategoryId: "",
+    CategoryId: 0,
   });
   const dataNew = [
     {

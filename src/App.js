@@ -13,7 +13,7 @@ import "./App.css";
 import Navbar from "./components/navbar/Navbar";
 import UpdatePage from "./pages/updatePostPage/UpdatePages";
 import Login from "./pages/login/Login";
-import React from "react";
+import React, { useEffect } from "react";
 import Register from "./pages/register/Register";
 import TableUser from "./pages/table-user/TableUser";
 import Cookies from "js-cookie";
@@ -24,6 +24,7 @@ import ImageTable from "./pages/image-slider/Image-table";
 
 const App = () => {
   const token = Cookies.get("Authorization");
+
 
   return (
     <Router>
@@ -44,6 +45,7 @@ const App = () => {
               <Route path='/admin/user' element={<TableUser />} />
               <Route path='/admin/user/:id' element={<UpdateUser />} />
               <Route path='/admin/image/' element={<TableImage />} />
+              <Route path="/admin/slide/" element={<ImageTable />} />
               <Route path='/admin/image/:id' element={<UpdateImage />} />
             </Routes>
           </div>
