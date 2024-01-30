@@ -7,7 +7,7 @@ import { axiosInstance } from "../../js/auth.config";
 import "./postpage.css";
 import { message } from "antd";
 import ReactQuill from "react-quill";
-import EditorToolbar, { modules, formats, imageHandler, uploadImageToServer } from "../../js/EditorToolbar";
+import EditorToolbar, { modules, formats, uploadImageToServer, uploadVideoToServer } from "../../js/EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
@@ -17,7 +17,7 @@ import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
 
   const [category, setCategory] = useState([]);
 
-  const reactQuillRef = useRef()
+  const reactQuillRef = useRef(null)
 
   const [createNews, setCreateNews] = useState({
     title: "",
@@ -140,7 +140,7 @@ import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
     } catch (error) {
       console.log(error);
       message.error("Tạo mới bài viết thất bại");
-      throw error;
+      return false
     }
   };
 
@@ -157,8 +157,7 @@ import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
     setCreateNews({ ...createNews, content: value });
   };
 
-
-   const imageHandler = useCallback(()=>{
+  const imageHandler = useCallback((ref)=>{
   
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -171,16 +170,39 @@ import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
         const getUrl = await uploadImageToServer(file)
        
         const quill = await reactQuillRef.current;
-        console.log("quil",quill);
        
         if (quill) {
+          const urlImg = `${process.env.REACT_APP_API_URL_APP}/${getUrl}`
           const range = quill.getEditorSelection();
-          range && quill.getEditor().insertEmbed(range.index, "image", getUrl);
+          range && quill.getEditor().insertEmbed(range.index, "image", urlImg);
         }
       }
     };
-  },[])
+  }, [])
 
+  const VideoHandler = useCallback((ref)=>{
+  
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "video/*");
+    input.click();
+    input.onchange = async () => {
+      
+      if (input !== null && input.files !== null) {
+        const file = input.files[0];
+        const getUrl = await uploadVideoToServer(file)
+       
+        const quill = await reactQuillRef.current;
+      
+        if (quill) {
+          const urlImg = `${process.env.REACT_APP_API_URL_APP}/${getUrl}`
+          const range = quill.getEditorSelection();
+          range && quill.getEditor().insertEmbed(range.index, "video", urlImg);
+        }
+      }
+    };
+  }, [])
+ 
   return (
     <>
       <Button
@@ -271,14 +293,7 @@ import ButtonUploadFileCreate from "../createPosts/ButtonUploadFileCreate";
                 value={createNews.content}
                 onChange={ondescription}
                 placeholder={"Nhập nội dung bài viết...."}
-                modules={{
-                  ...modules("t1"), 
-                  
-                }}
-                handlers={{
-                  image: imageHandler,
-                  ...modules("t1").toolbar.handlers, 
-                }}
+                modules={modules("t1", imageHandler, VideoHandler)}
                 formats={formats}
               />
 

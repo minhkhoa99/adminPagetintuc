@@ -6,6 +6,18 @@ import { message } from "antd";
 // Custom Undo button icon component for Quill editor. You can import it directly
 // from 'quill/assets/icons/undo.svg' but I found that a number of loaders do not
 // handle them correctly
+const allowedImageFormats = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+];
+const allowedVideoFormats = [
+  "video/mp4",
+  "video/avi",
+  "video/mkv",
+  "video/mov",
+];
 const CustomUndo = () => (
   <svg viewBox='0 0 18 18'>
     <polygon className='ql-fill ql-stroke' points='6 10 4 12 2 10 6 10' />
@@ -19,6 +31,11 @@ const CustomUndo = () => (
 //getImageURL
 
 export const uploadImageToServer = async (file) =>{
+  
+  if(!allowedImageFormats.includes(file.type)){
+    message.error(`Vui lòng chọn ảnh đúng định dạng`);
+  }
+
   const formData = new FormData();
   formData.append("file", file); // Tên 'image' phải khớp với tên bạn sử dụng trong upload.single('image').
 
@@ -31,6 +48,28 @@ export const uploadImageToServer = async (file) =>{
   } catch (error) {
     console.error(error);
     message.error("Lỗi tải lên hình ảnh")
+    return false
+  }
+}
+
+export const uploadVideoToServer = async (file) =>{
+
+  if(!allowedVideoFormats.includes(file.type)){
+    message.error(`Vui lòng chọn ảnh đúng định dạng`);
+  }
+
+  const formData = new FormData();
+  formData.append("file", file); // Tên 'image' phải khớp với tên bạn sử dụng trong upload.single('image').
+  formData.append("title",file.name)
+  try {
+    let uploadEndpoint = `${process.env.REACT_APP_API_URL_APP}/upload-video`; // Endpoint mặc định cho ảnh
+
+    const response = await axiosInstance.post(uploadEndpoint, formData);
+
+    return response.data.data.link;
+  } catch (error) {
+    console.error(error);
+    message.error("Lỗi tải lên Video")
     return false
   }
 }
@@ -73,12 +112,14 @@ Font.whitelist = [
 Quill.register(Font, true);
 
 // Modules object for setting up the Quill editor
-export const modules = (props) => ({
+export const modules = (props, imageHandler, VideoHandler) => ({
   toolbar: {
     container: "#" + props,
     handlers: {
       undo: undoChange,
       redo: redoChange,
+      image: imageHandler,
+      video: VideoHandler
     },
   },
   history: {
