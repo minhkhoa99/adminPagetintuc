@@ -12,6 +12,7 @@ import EditorToolbar, { modules, formats, uploadVideoToServer, uploadImageToServ
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import ButtonUploadFile from "./ButtonUploadFile";
+import axios from "axios";
 
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
@@ -42,6 +43,14 @@ function FormUpdatePosts(props) {
   const [getIdNews, setGetIdNews] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [getNewId, setGetNewId] = useState()
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL_APP}/new/${props.postId}`)
+    .then((data) => setGetNewId(data.data.data) )
+    .catch((err) => console.log(err))
+  }, [])
+  console.log(getNewId);
 
   useEffect(() => {
     async function getData() {
@@ -129,6 +138,7 @@ function FormUpdatePosts(props) {
         message.error("Vui lòng nhập tối đa 50 ký tự");
         return false;
       }
+
 
       const updateNews = await axiosInstance.put(
         `${process.env.REACT_APP_API_URL_APP}/new/${getIdNews}`,
@@ -234,7 +244,7 @@ function FormUpdatePosts(props) {
             <div className='title-form '>
               <TextField
                 id='outlined-multiline-flexible'
-                label='Nhập chủ đề sự kiện'
+                label={getNewId.title}
                 name='title'
                 value={editNews.title}
                 onChange={handleChange}
@@ -262,7 +272,7 @@ function FormUpdatePosts(props) {
             <div className='short-title title-form '>
               <TextField
                 id='outlined-multiline-flexible'
-                label='Nhập tiêu đề ngắn'
+                label={getNewId.shortTitle}
                 multiline
                 maxRows={4}
                 name='shortTitle'
@@ -305,6 +315,7 @@ function FormUpdatePosts(props) {
                 onChange={ondescription}
                 placeholder={"Nhập nội dung bài viết...."}
                 modules={modules("t1",imageHandler,VideoHandler)}
+
                 formats={formats}
               />
             </Form.Group>

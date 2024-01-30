@@ -60,6 +60,7 @@ const Siderbar = () => {
           <li className='sidebar-item'>
             <a
               href={`${process.env.REACT_APP_URL_LINK}/admin/image-slider/`}
+
               className='sidebar-link collapsed'
             >
               Hình ảnh tiêu biểu

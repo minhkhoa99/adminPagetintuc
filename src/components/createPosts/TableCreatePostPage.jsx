@@ -1,4 +1,4 @@
-import { React, useEffect, useRef, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -10,13 +10,14 @@ import TableRow from "@mui/material/TableRow";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
-import { message } from "antd";
+import { Button, Modal, message } from "antd";
 import { axiosInstance } from "../../js/auth.config";
 
 export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [getData, setGetData] = useState([]);
+  const [deleteNew, setDeleteNew] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -45,7 +46,7 @@ export default function TableCreatePostPage() {
     if (!isFetching) {
       getAllData();
     }
-  }, []);
+  }, [getData]);
 
   const handleDelete = async (postId) => {
     try {
@@ -57,8 +58,6 @@ export default function TableCreatePostPage() {
       // Cập nhật state hoặc gọi lại hàm lấy dữ liệu mới (nếu cần)
       const updatedData = getData.filter((post) => post.id !== postId);
       setGetData(updatedData);
-
-      message.success("Xóa bài viết thành công");
     } catch (error) {
       console.log(error);
 
@@ -70,20 +69,20 @@ export default function TableCreatePostPage() {
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label='sticky table'>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell style={{ minWidth: 170 }}>Bài viết mới nhất</TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
+              <TableCell align="right" style={{ minWidth: 170 }}>
                 Tiêu đề ngắn
               </TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
+              <TableCell align="right" style={{ minWidth: 170 }}>
                 Sự kiện
               </TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
+              <TableCell align="right" style={{ minWidth: 170 }}>
                 Ngày tạo
               </TableCell>
-              <TableCell align='right' style={{ minWidth: 170 }}>
+              <TableCell align="right" style={{ minWidth: 170 }}>
                 Xóa bài viết
               </TableCell>
             </TableRow>
@@ -92,9 +91,9 @@ export default function TableCreatePostPage() {
             {getData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
-                <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                   <TableCell
-                    align='left'
+                    align="left"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -104,7 +103,7 @@ export default function TableCreatePostPage() {
                     {row.title}
                   </TableCell>
                   <TableCell
-                    align='right'
+                    align="right"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -115,7 +114,7 @@ export default function TableCreatePostPage() {
                   </TableCell>
 
                   <TableCell
-                    align='right'
+                    align="right"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -125,7 +124,7 @@ export default function TableCreatePostPage() {
                     {row.category_name}
                   </TableCell>
                   <TableCell
-                    align='right'
+                    align="right"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -134,12 +133,15 @@ export default function TableCreatePostPage() {
                   >
                     {moment(row.createdAt).format("DD-MM-YYYY")}
                   </TableCell>
-                  <TableCell align='right'>
+                  <TableCell align="right">
                     {" "}
                     <IconButton
-                      aria-label='delete'
-                      size='large'
-                      onClick={() => handleDelete(row.id)}
+                      aria-label="delete"
+                      size="large"
+                      onClick={() => {
+                        setDeleteNew(true);
+                        handleDelete(row.id);
+                      }}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -151,13 +153,47 @@ export default function TableCreatePostPage() {
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100, 1000, 5000]}
-        component='div'
+        component="div"
         count={getData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <Modal
+        footer={
+          <div>
+            <Button
+              ghost
+              type="primary" danger
+              onClick={() => {
+                setDeleteNew(false);
+              }}
+            >
+              HỦY
+            </Button>
+
+            <Button
+              type="primary"
+              ghost
+              onClick={() => {
+                setDeleteNew(false);
+
+                handleDelete();
+              }}
+            >
+              OK
+            </Button>
+          </div>
+        }
+        title="DELETE BÀI VIẾT"
+        open={deleteNew}
+        onCancel={() => {
+          setDeleteNew(false);
+        }}
+      >
+        <p>Bạn có chắc chắn muốn xóa bài viết này ?</p>
+      </Modal>
     </Paper>
   );
 }
