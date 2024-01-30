@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Modal, Space, Table, Upload } from "antd";
-import { useNavigate } from "react-router";
+import { Button, Form, Modal, Space, Table, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Swal from "sweetalert";
 const { Column } = Table;
 
 const ImageTable = () => {
-  const navigate = useNavigate();
+ 
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
 
   const layout = {

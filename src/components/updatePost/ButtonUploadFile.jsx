@@ -9,25 +9,20 @@ const ButtonUploadFile = ({ onFileUpload }) => {
     "image/png",
     "image/gif",
   ];
-  const allowedVideoFormats = [
-    "video/mp4",
-    "video/avi",
-    "video/mkv",
-    "video/mov",
-  ];
+
+  let obj = {};
 
   const handleChange = async (info) => {
     if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
     } else if (
       info.file.status === "error" ||
-      (!allowedImageFormats.includes(info.file.type) &&
-        !allowedVideoFormats.includes(info.file.type))
+      (!allowedImageFormats.includes(info.file.type))
     ) {
       message.error(`${info.file.name} file upload failed.`);
     }
 
-    onFileUpload(info.file, allowedImageFormats, allowedVideoFormats);
+    obj.type = info.file.type;
   };
 
   const handleImage = async (options) => {
@@ -48,6 +43,10 @@ const ButtonUploadFile = ({ onFileUpload }) => {
         },
       });
 
+      obj.link = response.data.data.link;
+
+      onFileUpload(obj, allowedImageFormats);
+      
       onSuccess(response.data, file);
     } catch (error) {
       console.error(

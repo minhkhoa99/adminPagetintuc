@@ -15,6 +15,7 @@ const removeToken = () => {
 // Tạo một instance Axios với cấu hình mặc định
 const axiosInstance = axios.create({
   headers: {
+    // 'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${getTokenFromCookie()}`, // Nếu bạn cần thêm token vào header
   },
 });

@@ -20,7 +20,6 @@ import Cookies from "js-cookie";
 import UpdateUser from "./pages/updateUser/UpdateUser";
 import TableImage from "./pages/table-image-link/Table";
 import UpdateImage from "./pages/table-image-link/tableUpdate";
-import ImageTable from "./pages/image-slider/Image-table";
 
 const App = () => {
   const token = Cookies.get("Authorization");

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Card, message } from "antd";
+import { Form, Input, Button, Checkbox, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Typography } from "antd";
 import axios from "axios";
@@ -15,7 +15,7 @@ const Login = () => {
         password: values.password,
       })
       .then((data) => {
-        console.log(data);
+       
         if (data.status === 200) {
           const token = data.data.token;
           const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);

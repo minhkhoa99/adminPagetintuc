@@ -1,5 +1,5 @@
 import { TextField, MenuItem } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -8,7 +8,7 @@ import { axiosInstance } from "../../js/auth.config";
 import { message } from "antd";
 import "./updatePages.css";
 import ReactQuill from "react-quill";
-import EditorToolbar, { modules, formats } from "../../js/EditorToolbar";
+import EditorToolbar, { modules, formats, uploadVideoToServer, uploadImageToServer } from "../../js/EditorToolbar";
 import "react-quill/dist/quill.snow.css";
 import "./TextEditor.css";
 import ButtonUploadFile from "./ButtonUploadFile";
@@ -17,9 +17,9 @@ import axios from "axios";
 function FormUpdatePosts(props) {
   const [show, setShow] = useState(false);
   const [values, setvalue] = useState("");
+  const reactQuillRef = useRef(null)
   const [category, setCategory] = useState([]);
   const [editNews, setEditNews] = useState({
-    id: null,
     title: "",
     shortTitle: "",
     host_new: "",
@@ -166,18 +166,11 @@ function FormUpdatePosts(props) {
     }
   };
 
-  const normalizeString = (str) => {
-    return str
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-  };
-
   const handleImageUpload = (title, isImage) => {
     if (isImage.includes(title.type)) {
       setEditNews((prevCreateNews) => ({
         ...prevCreateNews,
-        avatar: title.name,
+        avatar: title.link,
       }));
     }
   };
@@ -185,6 +178,53 @@ function FormUpdatePosts(props) {
   const ondescription = (value) => {
     setEditNews({ ...editNews, content: value });
   };
+
+  const imageHandler = useCallback((ref)=>{
+  
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.onchange = async () => {
+      
+      if (input !== null && input.files !== null) {
+        const file = input.files[0];
+        const getUrl = await uploadImageToServer(file)
+       
+        const quill = await reactQuillRef.current;
+      
+        if (quill) {
+          const urlImg = `${process.env.REACT_APP_API_URL_APP}/${getUrl}`
+          const range = quill.getEditorSelection();
+          range && quill.getEditor().insertEmbed(range.index, "image", urlImg);
+        }
+      }
+    };
+  }, [])
+
+  const VideoHandler = useCallback((ref)=>{
+  
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "video/*");
+    input.click();
+    input.onchange = async () => {
+      
+      if (input !== null && input.files !== null) {
+        const file = input.files[0];
+        const getUrl = await uploadVideoToServer(file)
+      
+        const quill = await reactQuillRef.current;
+      
+        if (quill) {
+          const urlImg = `${process.env.REACT_APP_API_URL_APP}/${getUrl}`
+          const range = quill.getEditorSelection();
+          range && quill.getEditor().insertEmbed(range.index, "video", urlImg);
+        }
+      }
+    };
+  }, [])
+
   return (
     <>
       <Button
@@ -269,11 +309,13 @@ function FormUpdatePosts(props) {
               <Form.Label>Nội dung sự kiện</Form.Label>
               <EditorToolbar toolbarId={"t1"} />
               <ReactQuill
+              ref={reactQuillRef}
                 theme='snow'
                 value={editNews.content}
                 onChange={ondescription}
-                placeholder={getNewId.content}
-                modules={modules("t1")}
+                placeholder={"Nhập nội dung bài viết...."}
+                modules={modules("t1",imageHandler,VideoHandler)}
+
                 formats={formats}
               />
             </Form.Group>
