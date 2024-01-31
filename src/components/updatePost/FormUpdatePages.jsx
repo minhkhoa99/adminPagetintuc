@@ -28,6 +28,7 @@ function FormUpdatePosts(props) {
     status: "",
     CategoryId: "",
   });
+
   const dataNew = [
     {
       id: 1,
@@ -41,6 +42,7 @@ function FormUpdatePosts(props) {
     },
   ];
   const [getIdNews, setGetIdNews] = useState([]);
+  const [getValue, setValues] = useState([])
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [getNewId, setGetNewId] = useState()
@@ -73,6 +75,7 @@ function FormUpdatePosts(props) {
     }
 
     getById();
+
   }, []);
 
   const handleEvent = (e) => {
@@ -237,14 +240,14 @@ function FormUpdatePosts(props) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Thêm sự kiện</Modal.Title>
+          <Modal.Title>Cập nhật sự kiện</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <div className='title-form '>
               <TextField
                 id='outlined-multiline-flexible'
-                label={getNewId.title}
+               
                 name='title'
                 value={editNews.title}
                 onChange={handleChange}
@@ -272,7 +275,7 @@ function FormUpdatePosts(props) {
             <div className='short-title title-form '>
               <TextField
                 id='outlined-multiline-flexible'
-                label={getNewId.shortTitle}
+             
                 multiline
                 maxRows={4}
                 name='shortTitle'

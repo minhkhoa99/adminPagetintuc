@@ -7,11 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
-import { Button, Modal, message } from "antd";
+import { message } from "antd";
 import { axiosInstance } from "../../js/auth.config";
+import { Button, Modal } from "react-bootstrap";
 
 export default function TableCreatePostPage() {
   const [page, setPage] = useState(0);
@@ -19,6 +19,12 @@ export default function TableCreatePostPage() {
   const [getData, setGetData] = useState([]);
   const [deleteNew, setDeleteNew] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -135,16 +141,28 @@ export default function TableCreatePostPage() {
                   </TableCell>
                   <TableCell align="right">
                     {" "}
-                    <IconButton
-                      aria-label="delete"
-                      size="large"
-                      onClick={() => {
-                        setDeleteNew(true);
-                        handleDelete(row.id);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Button variant="primary" onClick={handleShow}>
+                    <DeleteIcon />
+                    </Button>
+                    <Modal show={show} onHide={handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Xóa bài viết</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        Bạn có chắc chắn muốn xóa ?
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                          Đóng
+                        </Button>
+                        <Button
+                          variant="primary"
+                          onClick={() => handleDelete(row.id)}
+                        >
+                          Xác nhận
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                   </TableCell>
                 </TableRow>
               ))}
