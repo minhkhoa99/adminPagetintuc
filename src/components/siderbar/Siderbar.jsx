@@ -59,8 +59,7 @@ const Siderbar = () => {
           </li>
           <li className='sidebar-item'>
             <a
-              href={`${process.env.REACT_APP_URL_LINK}/admin/image-slider/`}
-
+              href={`${process.env.REACT_APP_URL_LINK}/admin/sdile/`}
               className='sidebar-link collapsed'
             >
               Hình ảnh tiêu biểu

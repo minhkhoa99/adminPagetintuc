@@ -22,7 +22,6 @@ const Login = () => {
           Cookies.set("Authorization", token, {
             expires,
             sameSite: "strict",
-            secure: true,
           });
           Swal({
             position: "top-end",
