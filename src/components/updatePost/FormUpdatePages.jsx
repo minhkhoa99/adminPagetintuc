@@ -42,7 +42,6 @@ function FormUpdatePosts(props) {
     },
   ];
   const [getIdNews, setGetIdNews] = useState([]);
-  const [getValue, setValues] = useState([])
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [getNewId, setGetNewId] = useState()
@@ -52,7 +51,6 @@ function FormUpdatePosts(props) {
     .then((data) => setGetNewId(data.data.data) )
     .catch((err) => console.log(err))
   }, [])
-  console.log(getNewId);
 
   useEffect(() => {
     async function getData() {

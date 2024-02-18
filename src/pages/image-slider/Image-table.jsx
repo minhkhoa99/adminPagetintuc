@@ -3,12 +3,16 @@ import { Button, Form, Modal, Space, Table, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Swal from "sweetalert";
+import { Button as ButtonReact,Modal as ModalReact } from "react-bootstrap";
 const { Column } = Table;
 
 const ImageTable = () => {
  
   const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const layout = {
     labelCol: {
       span: 8,
@@ -21,7 +25,7 @@ const ImageTable = () => {
   const [image, setImage] = useState([]);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL_APP}/upload-image/`)
+      .get(`${process.env.REACT_APP_API_URL_APP}/upload-image-slide/`)
       .then((data) => setImage(data.data.data))
       .catch((err) => console.log(err));
   }, []);
@@ -36,16 +40,10 @@ const ImageTable = () => {
 
   const handleDelete = (record) => {
     axios
-      .delete(`${process.env.REACT_APP_API_URL_APP}/upload-image/${record.id}`)
+      .delete(`${process.env.REACT_APP_API_URL_APP}/upload-image-slide/${record.id}`)
       .then((data) => {
-        Swal({
-          position: "top-end",
-          icon: "success",
-          title: "Your work has been saved",
-          showConfirmButton: false,
-          timer: 1500,
-        });
         window.location.reload();
+        return data
       })
       .catch((err) => console.log(err));
   };
@@ -63,12 +61,11 @@ const ImageTable = () => {
     formData.append("file", file);
     axios
       .post(
-        `${process.env.REACT_APP_API_URL_APP}/upload-image/image-new/`,
+        `${process.env.REACT_APP_API_URL_APP}/upload-image-slide/`,
         formData
       )
       .then((data) => {
         if (data.data) {
-          console.log(data.data);
           Swal({
             position: "top-end",
             icon: "success",
@@ -106,12 +103,29 @@ const ImageTable = () => {
               <Button
                 type='primary'
                 danger
-                onClick={() => {
-                  handleDelete(record);
-                }}
+                onClick={handleShow}
               >
                 DELETE
               </Button>
+              <ModalReact show={show} onHide={handleClose}>
+                      <ModalReact.Header closeButton>
+                        <ModalReact.Title>Xóa hình ảnh</ModalReact.Title>
+                      </ModalReact.Header>
+                      <ModalReact.Body>
+                        Bạn có chắc chắn muốn xóa ?
+                      </ModalReact.Body>
+                      <ModalReact.Footer>
+                        <ButtonReact variant="secondary" onClick={handleClose}>
+                          Đóng
+                        </ButtonReact>
+                        <ButtonReact
+                          variant="primary"
+                          onClick={() => handleDelete(record)}
+                        >
+                          Xác nhận
+                        </ButtonReact>
+                      </ModalReact.Footer>
+                    </ModalReact>
             </Space>
           )}
         />
